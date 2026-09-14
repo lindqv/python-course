@@ -1,4 +1,7 @@
 def celsius_to_fahrenheit(celsius: float) -> float:
+    """
+    Converts a temperature in degrees Celsius to degrees Fahrenheit.
+    """
     return celsius * 9 / 5 + 32
 
 def temperature_classification(temperature_celsius: float) -> str:
