@@ -9,7 +9,7 @@ def normalize_participant_name(name: str) -> str:
     return name.strip()
 
 def validate_age_range(age: int, range_start: int, range_end: int) -> bool:
-    return age in range(range_start, range_end + 1)
+    return age >= range_start and age <= range_end
 
 def calculate_registration_fee(participant: dict) -> int:
     if participant.get("student"):
