@@ -36,12 +36,19 @@ def print_all_sessions(sessions):
     for session in sessions:
         print(session)
 
+def print_filtered_sessions(sessions):
+    target = input("Enter your subject to filter by: ").strip().lower()
+    for session in sessions:
+        if session["subject"].lower() == target:
+            print(session)
+
 def menu(sessions):
     user_input = ""
 
     while user_input != "quit":
         print("1. View all sessions")
         print("2. View total time")
+        print("3. Filter by subject")
         print("Or type 'quit' to exit.")
         user_input = input("Enter your choice by typing an integer: ").strip().lower()
 
@@ -49,6 +56,8 @@ def menu(sessions):
             print_all_sessions(sessions)
         elif user_input == "2":
             print(calculate_total_minutes(sessions))
+        elif user_input == "3":
+            print_filtered_sessions(sessions)
 
 if __name__ == "__main__":
     study_sessions = [
