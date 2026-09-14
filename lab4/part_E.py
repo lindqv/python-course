@@ -32,9 +32,10 @@ def calculate_discount(price: float, discount: float = 0) -> float:
 def final_total(items: list[float], discount: float = 0) -> float:
     return calculate_discount(subtotal(items), discount)
 
-temperature_report(15.5)
-temperature_report(-5)
-temperature_report(30)
-print(final_total([100, 200]))
-print(final_total([100, 200], 20))
-print(final_total([100, 200, 300], 10))
+if __name__ == "__main__":
+    temperature_report(15.5)
+    temperature_report(-5)
+    temperature_report(30)
+    print(final_total([100, 200]))
+    print(final_total([100, 200], 20))
+    print(final_total([100, 200, 300], 10))
