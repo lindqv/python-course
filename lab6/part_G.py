@@ -33,6 +33,25 @@ for score in scores:
 has_non_zero_value = any(scores)
 all_zero_or_empty = all(scores)
 
+# Examples of Pythonic syntax that reduces boilerplate while preserving clarity:
+# 1. For/in loops, no need to use length or index unless needed:
+for score in scores:
+    print(scores)
+
+# 2. "in" for checking if an element exists in a list
+if 0 in scores:
+    print("There is a score of 0")
+
+# 3. List comprehensions
+positive_scores = [score for score in scores if score > 0]
+
+# 4. Zipping
+zipped = zip(names, scores)
+
+# 5. Enumerate
+for index, name in enumerate(names):
+    print(index, name)
+
 
 print("Flattened list", flattened_list)
 print("Flattened list loop", flattened_list_loop)
