@@ -35,6 +35,10 @@ def calculate_discount(price: float, discount: float = 0) -> float:
 def final_total(items: list[float], discount: float = 0) -> float:
     return calculate_discount(subtotal(items), discount)
 
+# Question 3:
+# I could not find any earlier exercises to refactor, 
+# since I already used functions in my solutions.
+
 if __name__ == "__main__":
     temperature_report(15.5)
     temperature_report(-5)
