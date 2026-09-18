@@ -58,10 +58,6 @@ for rank, product in enumerate(sorted_products_inventory_values, start=1):
     name, value = next(iter(product.items()))
     print(f"{rank}. {name}, {value} kr")
 
-
-for x in test:
-    print(x)
-
 for value in zipped_vegetables:
     print(value)
 
