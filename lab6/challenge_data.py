@@ -1,0 +1,38 @@
+players_raw_data = [
+    {
+        "name": "ACHILLES",
+        "team": "Greeks ",
+        "country": "Greece",
+        "score": 100,
+        "matches_played": 50,
+        "wins": 49,
+        "is_active": True,
+    },
+    {
+        "name": "Patrocles",
+        "team": " greeks",
+        "country": "greece ",
+        "score": 60,
+        "matches_played": 20,
+        "wins": 10,
+        "is_active": True,
+    },
+    {
+        "name": "  Hector",
+        "team": "Troyans",
+        "country": "Troy",
+        "score": 100,
+        "matches_played": 50,
+        "wins": 40,
+        "is_active": True,
+    },
+    {
+        "name": "cassandra ",
+        "team": "troyans",
+        "country": "TROY",
+        "score": 80,
+        "matches_played": 30,
+        "wins": 18,
+        "is_active": True,
+    },
+]
