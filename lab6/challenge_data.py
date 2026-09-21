@@ -3,9 +3,9 @@ players_raw_data = [
         "name": "ACHILLES",
         "team": "Greeks ",
         "country": "Greece",
-        "score": 100,
+        "score": 112,
         "matches_played": 50,
-        "wins": 49,
+        "wins": 50,
         "is_active": True,
     },
     {
