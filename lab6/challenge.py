@@ -9,8 +9,9 @@ players = [
         "matches_played": player.get("matches_played", 0),
         "wins": player.get("wins", 0),
         "is_active": player.get("is_active", False),
-    }
-    for player in players_raw_data]
+    } 
+    for player in players_raw_data
+    ]
 
 active_players = [player for player in players if player["is_active"]]
 three_wins = [player for player in players if player["wins"] >= 3]
@@ -52,7 +53,7 @@ def print_final_report(report: dict):
         try:
             for k, v in value.items():
                 print(k, v)
-        except:
+        except AttributeError:
             try:
                 for v in value:
                     print(v)
