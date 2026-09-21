@@ -21,7 +21,7 @@ players_raw_data = [
         "name": "  Hector",
         "team": "Troyans",
         "country": "Troy",
-        "score": 100,
+        "score": 90,
         "matches_played": 50,
         "wins": 40,
         "is_active": True,
