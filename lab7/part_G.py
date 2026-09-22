@@ -21,6 +21,8 @@ class Student:
         self.score = new_score
 
 class Course:
+    max_students = 60
+
     def __init__(self, name: str, teacher: Teacher, hours: int = 40):
         self.name = name
         self.teacher = teacher
@@ -28,6 +30,8 @@ class Course:
         self.hours = hours
 
     def add_student(self, student: Student):
+        if self.student_count() >= self.max_students:
+            raise ValueError("The maximum number of students has been reached")
         self.students.append(student)
 
     def student_count(self) -> int:
@@ -65,5 +69,6 @@ new_course = Course("Debugging", teacher)
 print("Are the student lists the same?", course.students == new_course.students)
 
 # Question 4
-# I added the class attribute "hours" to the Course class to represent the number of hours for the course.
-# It belongs to the class rather than an individual object since each course has a hour number associated with it.
+# I added the class attribute "max_students" to the Course class to represent the maximum number of students allowed.
+# It belongs to the class rather than an individual object since it is a shared property of 
+# all the courses that we would like to represent.
