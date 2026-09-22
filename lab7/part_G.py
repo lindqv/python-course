@@ -21,10 +21,11 @@ class Student:
         self.score = new_score
 
 class Course:
-    def __init__(self, name: str, teacher: Teacher):
+    def __init__(self, name: str, teacher: Teacher, hours: int = 40):
         self.name = name
         self.teacher = teacher
         self.students: list[Student] = []
+        self.hours = hours
 
     def add_student(self, student: Student):
         self.students.append(student)
@@ -59,3 +60,10 @@ print("Score is now", student3.score)
 print("Students with scores above 80")
 for student in course.students_above_score_threshold(80):
     print(student.name)
+
+new_course = Course("Debugging", teacher)
+print("Are the student lists the same?", course.students == new_course.students)
+
+# Question 4
+# I added the class attribute "hours" to the Course class to represent the number of hours for the course.
+# It belongs to the class rather than an individual object since each course has a hour number associated with it.
