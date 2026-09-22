@@ -21,7 +21,7 @@ class Course:
         self.teacher = teacher
         self.students: list[Student] = []
 
-    def add_student(self, student: dict):
+    def add_student(self, student: Student):
         self.students.append(student)
 
     def student_count(self) -> int:
