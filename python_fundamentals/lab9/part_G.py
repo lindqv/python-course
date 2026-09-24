@@ -13,7 +13,7 @@ computer = Computer("HP", cpu)
 print(computer.brand)
 print(computer.cpu.model)
 
-# Computer has-a CPU" makes more sense than "Computer is-a CPU", 
+# "Computer has-a CPU" makes more sense than "Computer is-a CPU", 
 # since a CPU is only one of the parts of a computer.
 # Using composition rather than inheritance models the real world relationship more accurately.
 
