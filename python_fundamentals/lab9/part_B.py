@@ -1,5 +1,5 @@
 class Document:
-    def __init__(self, title):
+    def __init__(self, title: str):
         self.title = title
 
     def describe(self):

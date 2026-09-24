@@ -1,5 +1,5 @@
 class Account:
-    def __init__(self, owner, balance):
+    def __init__(self, owner: str, balance: float):
         self.owner = owner
         self.balance = balance
 
@@ -7,7 +7,7 @@ class Account:
         return f"Account with balance {self.balance} and owner {self.owner}"
 
 class SavingsAccount(Account):
-    def __init__(self, owner, balance, interest_rate):
+    def __init__(self, owner: str, balance: float, interest_rate: float):
         super().__init__(owner, balance)
         self.interest_rate = interest_rate
 

@@ -1,9 +1,9 @@
 class User:
-    def __init__(self, username):
+    def __init__(self, username: str):
         self.username = username
 
 class AdminUser(User):
-    def __init__(self, username):
+    def __init__(self, username: str):
         super().__init__(username)
         self.is_admin = True
 

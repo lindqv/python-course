@@ -1,18 +1,18 @@
 class Printer:
-    def __init__(self, status):
+    def __init__(self, status: str):
         self.status = status
 
     def display_status(self):
         return "Printer status " + self.status
 
 class Screen:
-    def __init__(self, status):
+    def __init__(self, status: str):
         self.status = status
 
     def display_status(self):
         return "Screen status " + self.status
 
-objects = [Printer("on"), Screen("off")]
+objects = [Printer("working"), Screen("in repair")]
 
 for object in objects:
     print(object.display_status())
