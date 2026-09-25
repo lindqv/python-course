@@ -17,8 +17,8 @@ class Character:
         self.abilities = abilities
 
     def attack(self, target: 'Character', ability: Ability):
-        if dice.roll(20) > target.armour_class:
-            attack_damage = dice.roll(ability.maximum_damage, ability.minimum_damage)
+        if dice.roll() > target.armour_class:
+            attack_damage = dice.roll(ability.minimum_damage, ability.maximum_damage)
             target.health_points -= attack_damage
             print(f"{self.name} attacked {target.name} with {ability.ability_name} for {attack_damage} damage")
         else:
@@ -29,7 +29,7 @@ class Dice:
     def __init__(self):
         random.seed()
 
-    def roll(self, max: int, min: int=1) -> int:
+    def roll(self, min: int=1, max: int=20) -> int:
         return random.randrange(min, max + 1)
 
     def choose_index(self, max: int) -> int:
