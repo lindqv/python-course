@@ -8,12 +8,13 @@ class Character:
     def __init__(self, name: str, health_points: int, level: int, abilities: list[Ability]):
         self.name = name
         self.health_points = health_points
+        self.max_health_points = health_points
         self.level = level
         self.abilities = abilities
 
     def attack(self, target: 'Character', ability: Ability):
         target.health_points -= ability.damage
-        print(f"{self.name} attacked {target.name} for {ability.damage} damage")
+        print(f"{self.name} attacked {target.name} for {ability.damage} damage with {ability.ability_name}")
 
 player_abilities = [Ability("Basic attack", 3)]
 player = Character("Player", 10, 1, player_abilities)
@@ -27,7 +28,7 @@ while player.health_points > 0:
     while enemies:
         print("New turn. Health status:")
         for participant in [player] + enemies:
-            print(participant.name, participant.health_points)
+            print(f"{participant.name}: {participant.health_points}/{participant.max_health_points} health points")
         enemy_to_attack = enemies[0]
         ability_to_use = player.abilities[0]
         player.attack(enemy_to_attack, ability_to_use)
@@ -37,6 +38,7 @@ while player.health_points > 0:
         
         for enemy in enemies:
             enemy.attack(player, enemy.abilities[0])
+        print("\n")
 
     print("Enemies defeated")
     break
