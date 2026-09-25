@@ -11,7 +11,7 @@ class Character:
         self.level = level
         self.abilities = abilities
 
-    def attack(self, target, ability: Ability): #todo: use character type
+    def attack(self, target: 'Character', ability: Ability):
         target.health_points -= ability.damage
         print(f"{self.name} attacked {target.name} for {ability.damage} damage")
 
