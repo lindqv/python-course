@@ -7,16 +7,21 @@ class Ability:
         self.heal = heal
 
 class Character:
-    def __init__(self, name: str, health_points: int, level: int, abilities: list[Ability]):
+    def __init__(self, name: str, health_points: int, level: int, armour_class: int, abilities: list[Ability]):
         self.name = name
         self.health_points = health_points
         self.max_health_points = health_points
         self.level = level
+        self.armour_class = armour_class
         self.abilities = abilities
 
     def attack(self, target: 'Character', ability: Ability):
-        target.health_points -= ability.damage
-        print(f"{self.name} attacked {target.name} for {ability.damage} damage with {ability.ability_name}")
+        if dice.roll(20) > target.armour_class:
+            target.health_points -= ability.damage
+            print(f"{self.name} attacked {target.name} with {ability.ability_name} for {ability.damage} damage")
+        else:
+            print(f"{self.name} attacked {target.name} with {ability.ability_name}, but missed")
+
 
 class Dice:
     def __init__(self):
@@ -30,11 +35,11 @@ class Dice:
 
 
 player_abilities = [Ability("Advanced attack", 4), Ability("Basic attack", 2)]
-player = Character("Player", 10, 1, player_abilities)
+player = Character("Player", 10, 1, 15, player_abilities)
 
 rat_abilities = [Ability("Bite", 2), Ability("Screech", 1)]
-rat1 = Character("Rat 1", 5, 1, rat_abilities)
-rat2 = Character("Rat 2", 5, 1, rat_abilities)
+rat1 = Character("Rat 1", 5, 1, 10, rat_abilities)
+rat2 = Character("Rat 2", 5, 1, 10, rat_abilities)
 enemies = [rat1, rat2]
 
 dice = Dice()
