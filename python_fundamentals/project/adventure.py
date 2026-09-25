@@ -19,18 +19,21 @@ player_abilities = [Ability("Basic attack", 3)]
 player = Character("Player", 10, 1, player_abilities)
 
 rat_abilities = [Ability("Bite", 1)]
-rat1 = Character("Rat", 5, 1, rat_abilities)
-rat2 = Character("Rat", 5, 1, rat_abilities)
+rat1 = Character("Rat 1", 5, 1, rat_abilities)
+rat2 = Character("Rat 2", 5, 1, rat_abilities)
 enemies = [rat1, rat2]
 
 while player.health_points > 0:
     while enemies:
-        print("New turn")
+        print("New turn. Health status:")
+        for participant in [player] + enemies:
+            print(participant.name, participant.health_points)
         enemy_to_attack = enemies[0]
         ability_to_use = player.abilities[0]
         player.attack(enemy_to_attack, ability_to_use)
         if enemy_to_attack.health_points <= 0:
             enemies.remove(enemy_to_attack)
+            print(enemy_to_attack.name, "was defeated!")
         
         for enemy in enemies:
             enemy.attack(player, enemy.abilities[0])
