@@ -112,21 +112,22 @@ health_potion = Item("Health potion")
 rat_boss_room = Room([rat_boss], [longsword, health_potion])
 
 gelatinous_cube_abilities = [Ability("Ooze", 3, 6), Ability("Engulf", 7, 10)]
-gelatinous_cube = Character("Gelatinous cube", 84, 3, 8, gelatinous_cube_abilities)
-gelatinous_cube_room = Room([gelatinous_cube])
+gelatinous_cube = Character("Gelatinous cube", 84, 1, 8, gelatinous_cube_abilities)
+gelatinous_armour = Armour("Gelatinous armour", 18)
+gelatinous_cube_room = Room([gelatinous_cube], [gelatinous_armour])
 
 displacer_beast_abilities = [Ability("Multiattack", 10, 16), Ability("Tentacle attack", 8, 18)]
-displacer_beast = Character("Displacer beast", 85, 4, 13, displacer_beast_abilities)
+displacer_beast = Character("Displacer beast", 85, 1, 13, displacer_beast_abilities)
 displacer_beast_room = Room([displacer_beast])
 
 spectator_abilities = [Ability("Wounding ray", 10, 25), Ability("Fear ray", 10, 20), Ability("Bite", 12, 20)]
-spectator = Character("Spectator", 39, 5, 14, spectator_abilities)
+spectator = Character("Spectator", 39, 1, 14, spectator_abilities)
 spectator_room = Room([spectator])
 
 wyrmling_abilities = [Ability("Poison breath", 10, 21), Ability("Bite", 7, 10)]
-wyrmling1 = Character("Green dragon wyrmling 1", 38, 6, 17, wyrmling_abilities)
-wyrmling2 = Character("Green dragon wyrmling 2", 38, 6, 17, wyrmling_abilities)
-wyrmling3 = Character("Green dragon wyrmling 3", 38, 6, 17, wyrmling_abilities)
+wyrmling1 = Character("Green dragon wyrmling 1", 38, 1, 17, wyrmling_abilities)
+wyrmling2 = Character("Green dragon wyrmling 2", 38, 1, 17, wyrmling_abilities)
+wyrmling3 = Character("Green dragon wyrmling 3", 38, 1, 17, wyrmling_abilities)
 wyrmling_room = Room([wyrmling1, wyrmling2, wyrmling3])
 
 wyrmling4 = Character("Green dragon wyrmling 4", 38, 6, 17, wyrmling_abilities)
@@ -177,10 +178,17 @@ for number, room in enumerate(dungeon.rooms, start=1):
             if hasattr(room, "items"):
                 for item in room.items:
                     if isinstance(item, Weapon):
-                        current_weapon = player.equipment.weapon
-                        player.inventory.append(current_weapon)
+                        if player.equipment.weapon:
+                            player.inventory.append(player.equipment.weapon)
                         player.equipment.weapon = item
-                        print(player.name, "found and equipped", item.name)
+                        print(player.name, "found and equipped weapon", item.name)
+
+                    elif isinstance(item, Armour):
+                        if player.equipment.armour:
+                            player.inventory.append(player.equipment.armour)
+                        player.equipment.armour = item
+                        player.armour_class = item.armour_class
+                        print(player.name, "found and equipped armour", item.name)
 
                     else:
                         player.inventory.append(item)
