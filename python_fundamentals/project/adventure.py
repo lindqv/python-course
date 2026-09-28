@@ -13,13 +13,23 @@ class Item:
     def __str__(self):
         return self.name
 
-class Equipment(Item):
+class Weapon(Item):
     def __init__(self, name: str, damage_bonus: int):
         super().__init__(name)
         self.damage_bonus = damage_bonus
 
+class Armour(Item):
+    def __init__(self, name: str, armour_class: int):
+        super().__init__(name)
+        self.armour_class = armour_class
+
+class CharacterEquipment:
+    def __init__(self, weapon: Weapon = None, armour: Armour = None):
+        self.weapon = weapon
+        self.armour = armour
+
 class Character:
-    def __init__(self, name: str, health_points: int, level: int, armour_class: int, equipment: dict[str, Equipment], inventory: list[Item], abilities: list[Ability]):
+    def __init__(self, name: str, health_points: int, level: int, armour_class: int, equipment: CharacterEquipment, inventory: list[Item], abilities: list[Ability]):
         self.name = name
         self.health_points = health_points
         self.max_health_points = health_points
@@ -34,8 +44,8 @@ class Character:
     def attack(self, target: 'Character', ability: Ability):
         if dice.roll() > target.armour_class:
             weapon_bonus = 0
-            if self.equipment.get("weapon"):
-                weapon_bonus = self.equipment.get("weapon").damage_bonus
+            if self.equipment.weapon:
+                weapon_bonus = self.equipment.weapon.damage_bonus
 
             attack_damage = (dice.roll(ability.minimum_damage, ability.maximum_damage) + weapon_bonus) * self.level
             target.health_points -= attack_damage
@@ -84,15 +94,15 @@ class Dungeon:
         self.rooms = rooms
 
 player_abilities = [Ability("Advanced attack", 4, 6), Ability("Basic attack", 2, 3)]
-starter_weapon = Equipment("Starter sword", damage_bonus=1)
-player_equipment = {"weapon": starter_weapon}
+starter_weapon = Weapon("Starter sword", damage_bonus=1)
+player_equipment = CharacterEquipment(weapon=starter_weapon)
 player = Character("Player", health_points=10, level=1, armour_class=15, equipment=player_equipment, inventory=[], abilities=player_abilities)
 
 rat_abilities = [Ability("Bite", 2, 3), Ability("Screech", 1, 2)]
-rat1 = Character("Rat 1", health_points=5, level=1, armour_class=8, equipment={}, inventory=[], abilities=rat_abilities)
-rat2 = Character("Rat 2", health_points=5, level=1, armour_class=8, equipment={}, inventory=[], abilities=rat_abilities)
-rat_boss = Character("Rat boss", health_points=20, level=2, armour_class=12, equipment={}, inventory=[], abilities=rat_abilities)
-longsword = Equipment("Longsword", 2)
+rat1 = Character("Rat 1", health_points=5, level=1, armour_class=8, equipment=CharacterEquipment(), inventory=[], abilities=rat_abilities)
+rat2 = Character("Rat 2", health_points=5, level=1, armour_class=8, equipment=CharacterEquipment(), inventory=[], abilities=rat_abilities)
+rat_boss = Character("Rat boss", health_points=20, level=2, armour_class=12, equipment=CharacterEquipment(), inventory=[], abilities=rat_abilities)
+longsword = Weapon("Longsword", 2)
 health_potion = Item("Health potion")
 
 rat_room = Room([rat1, rat2])
@@ -140,10 +150,10 @@ for number, room in enumerate(dungeon.rooms, start=1):
 
             if hasattr(room, "items"):
                 for item in room.items:
-                    if isinstance(item, Equipment):
-                        current_weapon = player.equipment["weapon"]
+                    if isinstance(item, Weapon):
+                        current_weapon = player.equipment.weapon
                         player.inventory.append(current_weapon)
-                        player.equipment["weapon"] = item
+                        player.equipment.weapon = item
                         print(player.name, "found and equipped", item.name)
 
                     else:
