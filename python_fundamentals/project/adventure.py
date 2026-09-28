@@ -19,13 +19,14 @@ class Equipment(Item):
         self.damage_bonus = damage_bonus
 
 class Character:
-    def __init__(self, name: str, health_points: int, level: int, armour_class: int, equipment: dict[str, Equipment], abilities: list[Ability]):
+    def __init__(self, name: str, health_points: int, level: int, armour_class: int, equipment: dict[str, Equipment], inventory: list[Item], abilities: list[Ability]):
         self.name = name
         self.health_points = health_points
         self.max_health_points = health_points
         self.level = level
         self.armour_class = armour_class
         self.equipment = equipment
+        self.inventory = inventory
         self.abilities = abilities
         self.current_experience = 0
         self.experience_to_next_level = self.level * 10
@@ -85,12 +86,12 @@ class Dungeon:
 player_abilities = [Ability("Advanced attack", 4, 6), Ability("Basic attack", 2, 3)]
 starter_weapon = Equipment("Starter sword", damage_bonus=1)
 player_equipment = {"weapon": starter_weapon}
-player = Character("Player", health_points=10, level=1, armour_class=15, equipment=player_equipment, abilities=player_abilities)
+player = Character("Player", health_points=10, level=1, armour_class=15, equipment=player_equipment, inventory=[], abilities=player_abilities)
 
 rat_abilities = [Ability("Bite", 2, 3), Ability("Screech", 1, 2)]
-rat1 = Character("Rat 1", health_points=5, level=1, armour_class=8, equipment={}, abilities=rat_abilities)
-rat2 = Character("Rat 2", health_points=5, level=1, armour_class=8, equipment={}, abilities=rat_abilities)
-rat_boss = Character("Rat boss", health_points=20, level=2, armour_class=12, equipment={}, abilities=rat_abilities)
+rat1 = Character("Rat 1", health_points=5, level=1, armour_class=8, equipment={}, inventory=[], abilities=rat_abilities)
+rat2 = Character("Rat 2", health_points=5, level=1, armour_class=8, equipment={}, inventory=[], abilities=rat_abilities)
+rat_boss = Character("Rat boss", health_points=20, level=2, armour_class=12, equipment={}, inventory=[], abilities=rat_abilities)
 longsword = Equipment("Longsword", 2)
 health_potion = Item("Health potion")
 
@@ -139,12 +140,16 @@ for number, room in enumerate(dungeon.rooms, start=1):
 
             if hasattr(room, "items"):
                 for item in room.items:
-                    print(player.name, "found", item.name)
-
                     if isinstance(item, Equipment):
+                        current_weapon = player.equipment["weapon"]
+                        player.inventory.append(current_weapon)
                         player.equipment["weapon"] = item
-                        print("Player equipped", item.name)
-                        print(player.equipment["weapon"].damage_bonus)
+                        print(player.name, "found and equipped", item.name)
+
+                    else:
+                        player.inventory.append(item)
+                        print(player.name, "found", item.name, "and put it in their inventory.")
+                    
         elif player.is_defeated():
             print(player.name, "was defeated. Game over!")
             break
