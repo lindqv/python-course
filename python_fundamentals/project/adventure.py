@@ -7,20 +7,34 @@ class Ability:
         self.maximum_damage = maximum_damage
         self.heal = heal
 
+class Item:
+    def __init__(self, name: str):
+        self.name = name
+
+class Equipment(Item):
+    def __init__(self, name: str, damage_multiplier: float):
+        super().__init__(name)
+        self.damage_multiplier = damage_multiplier
+
 class Character:
-    def __init__(self, name: str, health_points: int, level: int, armour_class: int, abilities: list[Ability]):
+    def __init__(self, name: str, health_points: int, level: int, armour_class: int, equipment: dict[str, Equipment], abilities: list[Ability]):
         self.name = name
         self.health_points = health_points
         self.max_health_points = health_points
         self.level = level
         self.armour_class = armour_class
+        self.equipment = equipment
         self.abilities = abilities
         self.current_experience = 0
         self.experience_to_next_level = self.level * 10
 
     def attack(self, target: 'Character', ability: Ability):
         if dice.roll() > target.armour_class:
-            attack_damage = dice.roll(ability.minimum_damage, ability.maximum_damage) * self.level
+            weapon_multiplier = 1.0
+            if self.equipment.get("weapon"):
+                weapon_multiplier = self.equipment.get("weapon").damage_multiplier
+
+            attack_damage = dice.roll(ability.minimum_damage, ability.maximum_damage) * self.level * weapon_multiplier
             target.health_points -= attack_damage
             print(f"{self.name} attacked {target.name} with {ability.ability_name} for {attack_damage} damage")
         else:
@@ -61,14 +75,15 @@ class Dungeon:
     def __init__(self, rooms: list[Room]):
         self.rooms = rooms
 
-
 player_abilities = [Ability("Advanced attack", 4, 6), Ability("Basic attack", 2, 3)]
-player = Character("Player", 10, 1, 15, player_abilities)
+starter_weapon = Equipment("Starter sword", 1.1)
+player_equipment = {"weapon": starter_weapon}
+player = Character("Player", health_points=10, level=1, armour_class=15, equipment=player_equipment, abilities=player_abilities)
 
 rat_abilities = [Ability("Bite", 2, 3), Ability("Screech", 1, 2)]
-rat1 = Character("Rat 1", 5, 1, 8, rat_abilities)
-rat2 = Character("Rat 2", 5, 1, 8, rat_abilities)
-rat_boss = Character("Rat boss", 20, 2, 12, rat_abilities)
+rat1 = Character("Rat 1", health_points=5, level=1, armour_class=8, equipment={}, abilities=rat_abilities)
+rat2 = Character("Rat 2", health_points=5, level=1, armour_class=8, equipment={}, abilities=rat_abilities)
+rat_boss = Character("Rat boss", health_points=20, level=2, armour_class=12, equipment={}, abilities=rat_abilities)
 
 rat_room = Room([rat1, rat2])
 rat_boss_room = Room([rat_boss])
