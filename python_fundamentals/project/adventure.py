@@ -10,6 +10,9 @@ class Item:
     def __init__(self, name: str):
         self.name = name
 
+    def __str__(self):
+        return self.name
+
 class Equipment(Item):
     def __init__(self, name: str, damage_bonus: int):
         super().__init__(name)
@@ -62,8 +65,12 @@ class Dice:
         return random.randrange(max)
 
 class Room:
-    def __init__(self, enemies: list[Character]):
+    def __init__(self, enemies: list[Character], items: list[Item] = None):
         self.enemies = enemies
+        if items:
+            self.items = items
+        else:
+            items = []
 
     def remove_enemy(self, enemy: Character):
         self.enemies.remove(enemy)
@@ -84,9 +91,11 @@ rat_abilities = [Ability("Bite", 2, 3), Ability("Screech", 1, 2)]
 rat1 = Character("Rat 1", health_points=5, level=1, armour_class=8, equipment={}, abilities=rat_abilities)
 rat2 = Character("Rat 2", health_points=5, level=1, armour_class=8, equipment={}, abilities=rat_abilities)
 rat_boss = Character("Rat boss", health_points=20, level=2, armour_class=12, equipment={}, abilities=rat_abilities)
+longsword = Equipment("Longsword", 2)
+health_potion = Item("Health potion")
 
 rat_room = Room([rat1, rat2])
-rat_boss_room = Room([rat_boss])
+rat_boss_room = Room([rat_boss], [longsword, health_potion])
 
 dungeon = Dungeon([rat_room, rat_boss_room])
 
@@ -127,6 +136,15 @@ for number, room in enumerate(dungeon.rooms, start=1):
             print("Enemies defeated!")
             player.health_points = player.max_health_points
             print(player.name, "rested and regained their health points.")
+
+            if hasattr(room, "items"):
+                for item in room.items:
+                    print(player.name, "found", item.name)
+
+                    if isinstance(item, Equipment):
+                        player.equipment["weapon"] = item
+                        print("Player equipped", item.name)
+                        print(player.equipment["weapon"].damage_bonus)
         elif player.is_defeated():
             print(player.name, "was defeated. Game over!")
             break
