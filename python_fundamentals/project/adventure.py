@@ -68,6 +68,21 @@ class Character:
         self.experience_to_next_level = self.level * 10
         self.max_health_points += 6
 
+    def equip_weapon(self, new_weapon: Weapon):
+        current_weapon = self.equipment.weapon
+        if current_weapon:
+            self.inventory.append(current_weapon)
+
+        self.equipment.weapon = new_weapon
+
+    def equip_armour(self, new_armour: Armour):
+        current_armour = self.equipment.armour
+        if current_armour:
+            self.inventory.append(current_armour)
+    
+        self.equipment.armour = new_armour
+        self.armour_class = new_armour.armour_class
+
 class Dice:
     def __init__(self):
         random.seed()
@@ -178,16 +193,11 @@ for number, room in enumerate(dungeon.rooms, start=1):
             if hasattr(room, "items"):
                 for item in room.items:
                     if isinstance(item, Weapon):
-                        if player.equipment.weapon:
-                            player.inventory.append(player.equipment.weapon)
-                        player.equipment.weapon = item
+                        player.equip_weapon(item)
                         print(player.name, "found and equipped weapon", item.name)
 
                     elif isinstance(item, Armour):
-                        if player.equipment.armour:
-                            player.inventory.append(player.equipment.armour)
-                        player.equipment.armour = item
-                        player.armour_class = item.armour_class
+                        player.equip_armour(item)
                         print(player.name, "found and equipped armour", item.name)
 
                     else:
