@@ -77,11 +77,11 @@ dungeon = Dungeon([rat_room, rat_boss_room])
 
 dice = Dice()
 
-for room in dungeon.rooms:
+for number, room in enumerate(dungeon.rooms, start=1):
     if player.is_defeated():
         break
 
-    print("New room")
+    print("Room", number)
     while room.has_enemies():
         print("New turn. Health status:")
         for participant in [player] + room.enemies:
