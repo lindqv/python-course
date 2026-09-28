@@ -29,7 +29,7 @@ class CharacterEquipment:
         self.armour = armour
 
 class Character:
-    def __init__(self, name: str, health_points: int, level: int, armour_class: int, equipment: CharacterEquipment, inventory: list[Item], abilities: list[Ability]):
+    def __init__(self, name: str, health_points: int, level: int, armour_class: int, abilities: list[Ability], equipment: CharacterEquipment = None, inventory: list[Item] = None):
         self.name = name
         self.health_points = health_points
         self.max_health_points = health_points
@@ -41,10 +41,13 @@ class Character:
         self.current_experience = 0
         self.experience_to_next_level = self.level * 10
 
+        if inventory is None:
+            self.inventory = []
+
     def attack(self, target: 'Character', ability: Ability):
         if dice.roll() > target.armour_class:
             weapon_bonus = 0
-            if self.equipment.weapon:
+            if self.equipment and self.equipment.weapon:
                 weapon_bonus = self.equipment.weapon.damage_bonus
 
             attack_damage = (dice.roll(ability.minimum_damage, ability.maximum_damage) + weapon_bonus) * self.level
@@ -96,12 +99,12 @@ class Dungeon:
 player_abilities = [Ability("Advanced attack", 4, 6), Ability("Basic attack", 2, 3)]
 starter_weapon = Weapon("Starter sword", damage_bonus=1)
 player_equipment = CharacterEquipment(weapon=starter_weapon)
-player = Character("Player", health_points=10, level=1, armour_class=15, equipment=player_equipment, inventory=[], abilities=player_abilities)
+player = Character("Player", health_points=10, level=1, armour_class=15, equipment=player_equipment, abilities=player_abilities)
 
 rat_abilities = [Ability("Bite", 2, 3), Ability("Screech", 1, 2)]
-rat1 = Character("Rat 1", health_points=5, level=1, armour_class=8, equipment=CharacterEquipment(), inventory=[], abilities=rat_abilities)
-rat2 = Character("Rat 2", health_points=5, level=1, armour_class=8, equipment=CharacterEquipment(), inventory=[], abilities=rat_abilities)
-rat_boss = Character("Rat boss", health_points=20, level=2, armour_class=12, equipment=CharacterEquipment(), inventory=[], abilities=rat_abilities)
+rat1 = Character("Rat 1", health_points=5, level=1, armour_class=8, abilities=rat_abilities)
+rat2 = Character("Rat 2", health_points=5, level=1, armour_class=8, abilities=rat_abilities)
+rat_boss = Character("Rat boss", health_points=20, level=2, armour_class=12, abilities=rat_abilities)
 longsword = Weapon("Longsword", 2)
 health_potion = Item("Health potion")
 
