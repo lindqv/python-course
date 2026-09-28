@@ -91,6 +91,8 @@ for room in dungeon.rooms:
 
         if not room.has_enemies():
             print("Enemies defeated!")
+            player.health_points = player.max_health_points
+            print(player.name, "rested and regained their health points.")
         elif player.is_defeated():
             print(player.name, "was defeated. Game over!")
             break
