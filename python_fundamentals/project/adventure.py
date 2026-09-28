@@ -50,6 +50,7 @@ class Character:
         self.current_experience = self.current_experience - self.experience_to_next_level
         self.level += 1
         self.experience_to_next_level = self.level * 10
+        self.max_health_points += 6
 
 class Dice:
     def __init__(self):
