@@ -12,9 +12,9 @@ class Item:
         self.name = name
 
 class Equipment(Item):
-    def __init__(self, name: str, damage_multiplier: float):
+    def __init__(self, name: str, damage_bonus: int):
         super().__init__(name)
-        self.damage_multiplier = damage_multiplier
+        self.damage_bonus = damage_bonus
 
 class Character:
     def __init__(self, name: str, health_points: int, level: int, armour_class: int, equipment: dict[str, Equipment], abilities: list[Ability]):
@@ -30,11 +30,11 @@ class Character:
 
     def attack(self, target: 'Character', ability: Ability):
         if dice.roll() > target.armour_class:
-            weapon_multiplier = 1.0
+            weapon_bonus = 0
             if self.equipment.get("weapon"):
-                weapon_multiplier = self.equipment.get("weapon").damage_multiplier
+                weapon_bonus = self.equipment.get("weapon").damage_bonus
 
-            attack_damage = dice.roll(ability.minimum_damage, ability.maximum_damage) * self.level * weapon_multiplier
+            attack_damage = (dice.roll(ability.minimum_damage, ability.maximum_damage) + weapon_bonus) * self.level
             target.health_points -= attack_damage
             print(f"{self.name} attacked {target.name} with {ability.ability_name} for {attack_damage} damage")
         else:
@@ -76,7 +76,7 @@ class Dungeon:
         self.rooms = rooms
 
 player_abilities = [Ability("Advanced attack", 4, 6), Ability("Basic attack", 2, 3)]
-starter_weapon = Equipment("Starter sword", 1.1)
+starter_weapon = Equipment("Starter sword", damage_bonus=1)
 player_equipment = {"weapon": starter_weapon}
 player = Character("Player", health_points=10, level=1, armour_class=15, equipment=player_equipment, abilities=player_abilities)
 
