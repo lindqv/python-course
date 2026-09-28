@@ -24,6 +24,9 @@ class Character:
         else:
             print(f"{self.name} attacked {target.name} with {ability.ability_name}, but missed")
 
+    def is_defeated(self) -> bool:
+        return self.health_points <= 0
+
 class Dice:
     def __init__(self):
         random.seed()
@@ -65,7 +68,7 @@ dungeon = Dungeon([rat_room, rat_boss_room])
 dice = Dice()
 
 for room in dungeon.rooms:
-    if player.health_points <= 0:
+    if player.is_defeated():
         break
 
     print("New room")
@@ -78,7 +81,7 @@ for room in dungeon.rooms:
         ability_to_use = player.abilities[dice.choose_index(len(player_abilities))]
         player.attack(enemy_to_attack, ability_to_use)
         
-        if enemy_to_attack.health_points <= 0:
+        if enemy_to_attack.is_defeated():
             room.enemies.remove(enemy_to_attack)
             print(enemy_to_attack.name, "was defeated!")
         
@@ -88,7 +91,7 @@ for room in dungeon.rooms:
 
         if not room.has_enemies():
             print("Enemies defeated!")
-        elif player.health_points <= 0:
+        elif player.is_defeated():
             print("Player was defeated. Game over!")
             break
 
