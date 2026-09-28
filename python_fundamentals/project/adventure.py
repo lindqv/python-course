@@ -20,7 +20,7 @@ class Character:
 
     def attack(self, target: 'Character', ability: Ability):
         if dice.roll() > target.armour_class:
-            attack_damage = dice.roll(ability.minimum_damage, ability.maximum_damage)
+            attack_damage = dice.roll(ability.minimum_damage, ability.maximum_damage) * self.level
             target.health_points -= attack_damage
             print(f"{self.name} attacked {target.name} with {ability.ability_name} for {attack_damage} damage")
         else:
