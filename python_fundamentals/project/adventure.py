@@ -1,11 +1,10 @@
 import random
 
 class Ability:
-    def __init__(self, ability_name: str, minimum_damage: int, maximum_damage: int, heal: int = 0):
+    def __init__(self, ability_name: str, minimum_damage: int, maximum_damage: int):
         self.ability_name = ability_name
         self.minimum_damage = minimum_damage
         self.maximum_damage = maximum_damage
-        self.heal = heal
 
 class Item:
     def __init__(self, name: str):
