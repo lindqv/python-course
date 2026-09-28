@@ -92,7 +92,7 @@ for room in dungeon.rooms:
         if not room.has_enemies():
             print("Enemies defeated!")
         elif player.is_defeated():
-            print("Player was defeated. Game over!")
+            print(player.name, "was defeated. Game over!")
             break
 
         print("\n")
