@@ -15,6 +15,8 @@ class Character:
         self.level = level
         self.armour_class = armour_class
         self.abilities = abilities
+        self.current_experience = 0
+        self.experience_to_next_level = self.level * 10
 
     def attack(self, target: 'Character', ability: Ability):
         if dice.roll() > target.armour_class:
@@ -26,6 +28,14 @@ class Character:
 
     def is_defeated(self) -> bool:
         return self.health_points <= 0
+
+    def calculate_experience_points(self):
+        return self.max_health_points * self.level
+
+    def level_up(self):
+        self.current_experience = self.current_experience - self.experience_to_next_level
+        self.level += 1
+        self.experience_to_next_level = self.level * 10
 
 class Dice:
     def __init__(self):
@@ -58,7 +68,7 @@ player = Character("Player", 10, 1, 15, player_abilities)
 rat_abilities = [Ability("Bite", 2, 3), Ability("Screech", 1, 2)]
 rat1 = Character("Rat 1", 5, 1, 8, rat_abilities)
 rat2 = Character("Rat 2", 5, 1, 8, rat_abilities)
-rat_boss = Character("Rat boss", 10, 2, 12, rat_abilities)
+rat_boss = Character("Rat boss", 20, 2, 12, rat_abilities)
 
 rat_room = Room([rat1, rat2])
 rat_boss_room = Room([rat_boss])
@@ -84,6 +94,15 @@ for room in dungeon.rooms:
         if enemy_to_attack.is_defeated():
             room.enemies.remove(enemy_to_attack)
             print(enemy_to_attack.name, "was defeated!")
+            experience = enemy_to_attack.calculate_experience_points()
+            player.current_experience += experience
+            print(player.name, "gained", experience, "experience points.")
+
+            if player.current_experience >= player.experience_to_next_level:
+                player.level_up()
+                print("Player levelled up! Player is now level", player.level)
+            
+            print(f"Experience status: Level {player.level}. {player.current_experience}/{player.experience_to_next_level} experience points to level up.")
         
         for enemy in room.enemies:
             ability_to_use = enemy.abilities[dice.choose_index(len(enemy.abilities))]
