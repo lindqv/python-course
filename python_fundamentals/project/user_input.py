@@ -32,14 +32,13 @@ def choose(options: list, question: str):
     return options[chosen_index]
 
 def choose_integer(min: int, max: int):
-    user_input = input(f"Make a choice by typing an integer in the range {min} to {max}: ").strip()
-    try:
-        choice = int(user_input)
-        if choice < min or choice > max:
-            print("Choice out of range, try again.")
-            choose_integer(min, max)
+    while True:
+        user_input = input(f"Make a choice by typing an integer in the range {min} to {max}: ").strip()
+        try:
+            choice = int(user_input)
+            if choice >= min and choice <= max:
+                return choice
+        except:
+            print("The input is not an integer, try again.")
         else:
-            return choice
-    except:
-        print("Invalid choice, try again.")
-        choose_integer(min, max)
+            print("Invalid choice, try again.")
