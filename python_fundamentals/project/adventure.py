@@ -33,13 +33,12 @@ for number, room in enumerate(dungeon.rooms, start=1):
             ability_to_use = enemy.abilities[dice.choose_index(len(enemy.abilities))]
             enemy.attack(player, ability_to_use, dice)
 
-        if not room.has_enemies():
-            print("Enemies defeated!")
-            player.rest()
-            player.loot(room.items)
-
-        elif player.is_defeated():
+        if player.is_defeated():
             print(player.name, "was defeated. Game over!")
             break
 
         print("\n")                    
+
+    if not room.has_enemies():
+        player.rest()
+        player.loot(room.items)
