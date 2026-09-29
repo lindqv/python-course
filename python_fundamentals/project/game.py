@@ -1,4 +1,5 @@
 from items import Dice
+from dungeon import Room
 from dungeon_data import dungeon
 from player_data import default_player
 
@@ -69,28 +70,20 @@ class Game:
             self.player.rest()
             self.player.loot(room.items)
 
-    def choose_integer(self, min: int, max: int):
-        user_input = input(f"Make a choice by typing an integer between {min} and {max}: ").strip()
-        try:
-            choice = int(user_input)
-            if choice < min or choice > max:
-                print("Choice out of range, try again.")
-                self.choose_integer(min, max)
-            else:
-                return choice
-        except:
-            print("Invalid choice, try again.")
-            self.choose_integer(min, max)
-        
-
-    def choose_action(self, room):
+    def choose_action(self, room: Room):
         actions = ["Attack", "Skip turn"]
         choice = self.choose(actions, "What would you like to do?")
 
         if choice == "Attack":
             enemy_to_attack = self.choose(room.enemies, "Which enemy would you like to attack?")
             ability = self.choose(self.player.abilities, "Which ability would you like to use?")
-            self.attack(enemy_to_attack, ability, room)
+            self.player.attack(enemy_to_attack, ability, self.dice)
+
+            if enemy_to_attack.is_defeated():
+                room.enemies.remove(enemy_to_attack)
+                print(enemy_to_attack.name, "was defeated!")
+                experience = enemy_to_attack.calculate_experience_points()
+                self.player.gain_experience_points(experience)
         else:
             return
 
@@ -106,14 +99,17 @@ class Game:
         chosen_index = choice - 1
         return options[chosen_index]
 
-    def attack(self, enemy_to_attack, ability_to_use, room):
-        self.player.attack(enemy_to_attack, ability_to_use, self.dice)
+    def choose_integer(self, min: int, max: int):
+        user_input = input(f"Make a choice by typing an integer between {min} and {max}: ").strip()
+        try:
+            choice = int(user_input)
+            if choice < min or choice > max:
+                print("Choice out of range, try again.")
+                self.choose_integer(min, max)
+            else:
+                return choice
+        except:
+            print("Invalid choice, try again.")
+            self.choose_integer(min, max)
                     
-        if enemy_to_attack.is_defeated():
-            room.enemies.remove(enemy_to_attack)
-            print(enemy_to_attack.name, "was defeated!")
-            experience = enemy_to_attack.calculate_experience_points()
-            self.player.gain_experience_points(experience)
-
-    def use_item(self):
-        return
+        
