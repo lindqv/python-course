@@ -45,6 +45,11 @@ class Character:
     def calculate_experience_points(self):
         return self.max_health_points * self.level
 
+
+class Player(Character):
+    def __init__(self, name, health_points, level, armour_class, abilities, equipment = None, inventory = None):
+        super().__init__(name, health_points, level, armour_class, abilities, equipment, inventory)
+
     def level_up(self):
         self.current_experience = self.current_experience - self.experience_to_next_level
         self.level += 1
@@ -60,7 +65,7 @@ class Character:
             print("Player levelled up! Player is now level", self.level)
                     
         print(f"Experience status: Level {self.level}. {self.current_experience}/{self.experience_to_next_level} experience points to level up.")
-
+    
     def equip_weapon(self, new_weapon: Weapon):
         current_weapon = self.equipment.weapon
         if current_weapon:
@@ -81,15 +86,15 @@ class Character:
             if isinstance(item, Weapon):
                 self.equip_weapon(item)
                 print(self.name, "found and equipped weapon", item.name)
-        
+            
             elif isinstance(item, Armour):
                 self.equip_armour(item)
                 print(self.name, "found and equipped armour", item.name)
-        
+            
             else:
                 self.inventory.append(item)
                 print(self.name, "found", item.name, "and put it in their inventory.")
-
+    
     def rest(self):
         self.health_points = self.max_health_points
         print(self.name, "rested and regained their health points.")
