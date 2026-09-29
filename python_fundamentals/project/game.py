@@ -84,42 +84,27 @@ class Game:
         
 
     def choose_action(self, room):
-        print("What would you like to do?")
-        print("1. Attack")
-        print("2. Skip turn")
-        
-        choice = self.choose_integer(1,2)
+        actions = ["Attack", "Skip turn"]
+        choice = self.choose(actions, "What would you like to do?")
 
-        if choice == 1:
-            enemy_to_attack = self.choose_enemy_to_attack(room.enemies)
-            ability = self.choose_ability(self.player.abilities)
+        if choice == "Attack":
+            enemy_to_attack = self.choose(room.enemies, "Which enemy would you like to attack?")
+            ability = self.choose(self.player.abilities, "Which ability would you like to use?")
             self.attack(enemy_to_attack, ability, room)
         else:
             return
 
-    def choose_enemy_to_attack(self, enemies):
-        if len(enemies) == 1:
-            return enemies[0]
+    def choose(self, options: list, question: str):
+        if len(options) == 1:
+            return options[0]
         else:
-            print("Which enemy would you like to attack?")
-            for number, enemy in enumerate(enemies, start=1):
-                print(f"{number}. {enemy.name}")
-
-        choice = self.choose_integer(1, len(enemies))
+            print(question)
+            for number, option in enumerate(options, start=1):
+                print(f"{number}. {option}")
+        
+        choice = self.choose_integer(1, len(options))
         chosen_index = choice - 1
-        return enemies[chosen_index]
-
-    def choose_ability(self, abilities):
-            if len(abilities) == 1:
-                return abilities[0]
-            else:
-                print("Which ability would you like to use?")
-                for number, ability in enumerate(abilities, start=1):
-                    print(f"{number}. {ability}")
-    
-            choice = self.choose_integer(1, len(abilities))
-            chosen_index = choice - 1
-            return abilities[chosen_index]
+        return options[chosen_index]
 
     def attack(self, enemy_to_attack, ability_to_use, room):
         self.player.attack(enemy_to_attack, ability_to_use, self.dice)

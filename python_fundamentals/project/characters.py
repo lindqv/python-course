@@ -31,6 +31,9 @@ class Character:
         if inventory is None:
             self.inventory = []
 
+    def __str__(self):
+        return f"{self.name}, {self.health_points}/{self.max_health_points} health points"
+
     def attack(self, target: 'Character', ability: Ability, dice: Dice):
         if dice.roll() > target.armour_class:
             weapon_bonus = 0
