@@ -42,9 +42,7 @@ for number, room in enumerate(dungeon.rooms, start=1):
 
         if not room.has_enemies():
             print("Enemies defeated!")
-            player.health_points = player.max_health_points
-            print(player.name, "rested and regained their health points.")
-
+            player.rest()
             player.loot(room.items)
 
         elif player.is_defeated():

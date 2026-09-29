@@ -79,3 +79,7 @@ class Character:
             else:
                 self.inventory.append(item)
                 print(self.name, "found", item.name, "and put it in their inventory.")
+
+    def rest(self):
+        self.health_points = self.max_health_points
+        print(self.name, "rested and regained their health points.")
