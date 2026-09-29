@@ -7,9 +7,10 @@ class Game:
     def __init__(self):
         self.dice = Dice()
         self.player = default_player
+        self.dungeon = dungeon
 
     def automatic_mode(self):
-        for number, room in enumerate(dungeon.rooms, start=1):
+        for number, room in enumerate(self.dungeon.rooms, start=1):
             if self.player.is_defeated():
                 break
 
@@ -44,7 +45,7 @@ class Game:
             self.player.loot(room.items)
 
     def interactive_mode(self):
-        for number, room in enumerate(dungeon.rooms, start=1):
+        for number, room in enumerate(self.dungeon.rooms, start=1):
             if self.player.is_defeated():
                 break
 
