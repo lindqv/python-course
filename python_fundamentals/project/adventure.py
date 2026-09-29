@@ -1,13 +1,9 @@
-from items import Weapon, Armour, Dice
-from characters import Ability, CharacterEquipment, Character
+from items import Dice
 from dungeon_data import dungeon
-
-player_abilities = [Ability("Advanced attack", 4, 6), Ability("Basic attack", 2, 3)]
-starter_weapon = Weapon("Starter sword", damage_bonus=1)
-player_equipment = CharacterEquipment(weapon=starter_weapon)
-player = Character("Player", health_points=10, level=1, armour_class=15, equipment=player_equipment, abilities=player_abilities)
+from player_data import default_player
 
 dice = Dice()
+player = default_player
 
 for number, room in enumerate(dungeon.rooms, start=1):
     if player.is_defeated():
@@ -20,7 +16,7 @@ for number, room in enumerate(dungeon.rooms, start=1):
             print(f"{participant.name}: {participant.health_points}/{participant.max_health_points} health points")
         
         enemy_to_attack = room.enemies[0]
-        ability_to_use = player.abilities[dice.choose_index(len(player_abilities))]
+        ability_to_use = player.abilities[dice.choose_index(len(player.abilities))]
         player.attack(enemy_to_attack, ability_to_use, dice)
         
         if enemy_to_attack.is_defeated():
