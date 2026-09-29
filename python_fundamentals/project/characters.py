@@ -12,7 +12,8 @@ class CharacterEquipment:
         self.armour = armour
 
 class Character:
-    def __init__(self, name: str, health_points: int, level: int, armour_class: int, abilities: list[Ability], equipment: CharacterEquipment = None, inventory: list[Item] = None):
+    def __init__(self, name: str, health_points: int, level: int, armour_class: int, abilities: list[Ability], 
+                 equipment: CharacterEquipment = None, inventory: list[Item] = None):
         self.name = name
         self.health_points = health_points
         self.max_health_points = health_points
@@ -60,7 +61,7 @@ class Player(Character):
         self.current_experience += experience
         print(self.name, "gained", experience, "experience points.")
         
-        if self.current_experience >= self.experience_to_next_level:
+        while self.current_experience >= self.experience_to_next_level:
             self.level_up()
             print("Player levelled up! Player is now level", self.level)
                     
