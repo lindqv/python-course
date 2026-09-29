@@ -27,14 +27,7 @@ for number, room in enumerate(dungeon.rooms, start=1):
             room.enemies.remove(enemy_to_attack)
             print(enemy_to_attack.name, "was defeated!")
             experience = enemy_to_attack.calculate_experience_points()
-            player.current_experience += experience
-            print(player.name, "gained", experience, "experience points.")
-
-            if player.current_experience >= player.experience_to_next_level:
-                player.level_up()
-                print("Player levelled up! Player is now level", player.level)
-            
-            print(f"Experience status: Level {player.level}. {player.current_experience}/{player.experience_to_next_level} experience points to level up.")
+            player.gain_experience_points(experience)
         
         for enemy in room.enemies:
             ability_to_use = enemy.abilities[dice.choose_index(len(enemy.abilities))]

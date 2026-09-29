@@ -51,6 +51,16 @@ class Character:
         self.experience_to_next_level = self.level * 10
         self.max_health_points += 6
 
+    def gain_experience_points(self, experience: int):
+        self.current_experience += experience
+        print(self.name, "gained", experience, "experience points.")
+        
+        if self.current_experience >= self.experience_to_next_level:
+            self.level_up()
+            print("Player levelled up! Player is now level", self.level)
+                    
+        print(f"Experience status: Level {self.level}. {self.current_experience}/{self.experience_to_next_level} experience points to level up.")
+
     def equip_weapon(self, new_weapon: Weapon):
         current_weapon = self.equipment.weapon
         if current_weapon:
