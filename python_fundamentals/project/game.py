@@ -40,9 +40,9 @@ class Game:
 
                 print("\n")                    
 
-        if not room.has_enemies():
-            self.player.rest()
-            self.player.loot(room.items)
+            if not room.has_enemies():
+                self.player.rest()
+                self.player.loot(room.items)
 
     def interactive_mode(self):
         for number, room in enumerate(self.dungeon.rooms, start=1):
@@ -50,10 +50,11 @@ class Game:
                 break
 
             print("Room", number)
+            print("Combat started!")
             while room.has_enemies():
                 print("New turn. Health status:")
                 for participant in [self.player] + room.enemies:
-                    print(f"{participant.name}: {participant.health_points}/{participant.max_health_points} health points")
+                    print(f"    {participant.name}: {participant.health_points}/{participant.max_health_points} health points")
 
                 choose_action(room, self.player, self.dice)
 
@@ -67,6 +68,7 @@ class Game:
 
                 print("\n")                    
 
-        if not room.has_enemies():
-            self.player.rest()
-            self.player.loot(room.items)
+            if not room.has_enemies():
+                print("Combat ended.")
+                self.player.rest()
+                self.player.loot(room.items)

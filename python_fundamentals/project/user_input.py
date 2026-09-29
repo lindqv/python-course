@@ -23,7 +23,7 @@ def choose(options: list, question: str):
     if len(options) == 1:
         return options[0]
     else:
-        print(question)
+        print("\n" + question)
         for number, option in enumerate(options, start=1):
             print(f"{number}. {option}")
     
@@ -32,7 +32,7 @@ def choose(options: list, question: str):
     return options[chosen_index]
 
 def choose_integer(min: int, max: int):
-    user_input = input(f"Make a choice by typing an integer between {min} and {max}: ").strip()
+    user_input = input(f"Make a choice by typing an integer in the range {min} to {max}: ").strip()
     try:
         choice = int(user_input)
         if choice < min or choice > max:
