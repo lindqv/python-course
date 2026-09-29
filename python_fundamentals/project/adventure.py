@@ -45,22 +45,10 @@ for number, room in enumerate(dungeon.rooms, start=1):
             player.health_points = player.max_health_points
             print(player.name, "rested and regained their health points.")
 
-            if hasattr(room, "items"):
-                for item in room.items:
-                    if isinstance(item, Weapon):
-                        player.equip_weapon(item)
-                        print(player.name, "found and equipped weapon", item.name)
+            player.loot(room.items)
 
-                    elif isinstance(item, Armour):
-                        player.equip_armour(item)
-                        print(player.name, "found and equipped armour", item.name)
-
-                    else:
-                        player.inventory.append(item)
-                        print(player.name, "found", item.name, "and put it in their inventory.")
-                    
         elif player.is_defeated():
             print(player.name, "was defeated. Game over!")
             break
 
-        print("\n")
+        print("\n")                    

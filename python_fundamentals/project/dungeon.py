@@ -4,10 +4,10 @@ from items import Item
 class Room:
     def __init__(self, enemies: list[Character], items: list[Item] = None):
         self.enemies = enemies
-        if items:
-            self.items = items
+        if items is None:
+            self.items = []
         else:
-            items = []
+            self.items = items
 
     def remove_enemy(self, enemy: Character):
         self.enemies.remove(enemy)

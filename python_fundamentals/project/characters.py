@@ -65,3 +65,17 @@ class Character:
     
         self.equipment.armour = new_armour
         self.armour_class = new_armour.armour_class
+
+    def loot(self, items: list[Item]):
+        for item in items:
+            if isinstance(item, Weapon):
+                self.equip_weapon(item)
+                print(self.name, "found and equipped weapon", item.name)
+        
+            elif isinstance(item, Armour):
+                self.equip_armour(item)
+                print(self.name, "found and equipped armour", item.name)
+        
+            else:
+                self.inventory.append(item)
+                print(self.name, "found", item.name, "and put it in their inventory.")
