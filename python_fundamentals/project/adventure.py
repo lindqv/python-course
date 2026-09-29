@@ -1,4 +1,4 @@
 from game import Game
 
 game = Game()
-game.automatic_mode()
+game.interactive_mode()

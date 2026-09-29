@@ -6,6 +6,9 @@ class Ability:
         self.minimum_damage = minimum_damage
         self.maximum_damage = maximum_damage
 
+    def __str__(self):
+        return self.ability_name
+
 class CharacterEquipment:
     def __init__(self, weapon: Weapon = None, armour: Armour = None):
         self.weapon = weapon
