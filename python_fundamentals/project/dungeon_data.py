@@ -1,5 +1,5 @@
 from characters import Ability, Enemy
-from items import Item, Armour, Weapon
+from items import HealthPotion, Armour, Weapon
 from dungeon import Room, Dungeon
 
 rat_abilities = [Ability("Bite", 2, 3), Ability("Screech", 1, 2)]
@@ -9,7 +9,7 @@ rat_room = Room([rat1, rat2])
 
 rat_boss = Enemy("Rat boss", health_points=20, level=2, armour_class=12, abilities=rat_abilities)
 longsword = Weapon("Longsword", 2)
-health_potion = Item("Health potion")
+health_potion = HealthPotion("Large health potion", 10)
 rat_boss_room = Room([rat_boss], [longsword, health_potion])
 
 gelatinous_cube_abilities = [Ability("Ooze", 3, 6), Ability("Engulf", 7, 10)]
