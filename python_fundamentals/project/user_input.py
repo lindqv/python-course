@@ -1,21 +1,14 @@
-from dungeon import Room
-from characters import Player
+from characters import Player, Character
 from items import Dice
 
-def choose_action(room: Room, player: Player, dice: Dice):
+def choose_action(enemies: list[Character], player: Player, dice: Dice):
     actions = ["Attack", "Skip turn"]
     choice = choose(actions, "What would you like to do?")
 
     if choice == "Attack":
-        enemy_to_attack = choose(room.enemies, "Which enemy would you like to attack?")
+        enemy_to_attack = choose(enemies, "Which enemy would you like to attack?")
         ability = choose(player.abilities, "Which ability would you like to use?")
         player.attack(enemy_to_attack, ability, dice)
-
-        if enemy_to_attack.is_defeated():
-            room.enemies.remove(enemy_to_attack)
-            print(enemy_to_attack.name, "was defeated!")
-            experience = enemy_to_attack.calculate_experience_points()
-            player.gain_experience_points(experience)
     else:
         return
 
