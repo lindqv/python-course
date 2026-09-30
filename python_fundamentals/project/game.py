@@ -25,6 +25,5 @@ class Game:
                 choose_action_after_combat(self.player, room)
             else:
                 self.player.loot(room.items)
-                room.items = []
                 self.player.rest()
 
