@@ -111,3 +111,11 @@ class Player(Character):
     def rest(self):
         self.health_points = self.max_health_points
         print(self.name, "rested and regained their health points.")
+
+    def show_inventory(self):
+        if len(self.inventory) == 0:
+            print("The inventory is empty.")
+
+        print("Inventory:")
+        for item in self.inventory:
+            print(item)

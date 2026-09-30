@@ -16,11 +16,13 @@ def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
 def choose_action_after_combat(player: Player, room: Room):
     choice = ""
     while choice != "Go to next room":
-        choice = choose(["Loot", "Rest", "Go to next room"], "What would you like to do?")
+        choice = choose(["Loot", "Rest", "Show inventory", "Go to next room"], "What would you like to do?")
         if choice == "Loot":
             player.loot(room.items)
         elif choice == "Rest":
             player.rest()
+        elif choice == "Show inventory":
+            player.show_inventory()
 
 def choose(options: list, question: str):
     if len(options) == 1:
