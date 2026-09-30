@@ -3,14 +3,14 @@ from items import Dice, Item
 from dungeon import Room
 
 def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
-    actions = ["Attack", "Use item", "Skip turn"]
+    actions = ["Attack", "Use or equip item", "Skip turn"]
     choice = choose(actions, "What would you like to do?")
 
     if choice == "Attack":
         enemy_to_attack = choose(enemies, "Which enemy would you like to attack?")
         ability = choose(player.abilities, "Which ability would you like to use?")
         player.attack(enemy_to_attack, ability, dice)
-    elif choice == "Use item":
+    elif choice == "Use or equip item":
         chosen_item = choose_item(player)
         if chosen_item:
             chosen_item.use(player)
@@ -20,14 +20,16 @@ def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
 def choose_action_after_combat(player: Player, room: Room):
     choice = ""
     while choice != "Go to next room":
-        choice = choose(["Loot", "Rest", "Show inventory", "Use item", "Go to next room"], "What would you like to do?")
+        choice = choose(["Loot", "Rest", "Show equipment", "Show inventory", "Use or equip item", "Go to next room"], "What would you like to do?")
         if choice == "Loot":
             player.loot(room.items)
         elif choice == "Rest":
             player.rest()
+        elif choice == "Show equipment":
+            player.show_equipment()
         elif choice == "Show inventory":
             player.show_inventory()
-        elif choice == "Use item":
+        elif choice == "Use or equip item":
             chosen_item = choose_item(player)
             if chosen_item:
                 chosen_item.use(player)
@@ -35,7 +37,7 @@ def choose_action_after_combat(player: Player, room: Room):
 def choose_item(player: Player) -> Item | None:
     player.show_inventory()
     options = player.inventory + ["Go back"]
-    choice = choose(options, "Which item would you like to use? Or choose 'Go back' to return.")
+    choice = choose(options, "Which item would you like to use or equip? Or choose 'Go back' to return.")
     if choice != "Go back":
         return choice
         

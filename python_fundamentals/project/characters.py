@@ -14,6 +14,9 @@ class CharacterEquipment:
         self.weapon = weapon
         self.armour = armour
 
+    def __str__(self):
+        return f"Weapon: {self.weapon.__str__()}, Armour: {self.armour.__str__()}"
+
 class Character:
     def __init__(self, name: str, health_points: int, level: int, armour_class: int, abilities: list[Ability], 
                  equipment: CharacterEquipment = None, inventory: list[Item] = None):
@@ -127,3 +130,6 @@ class Player(Character):
             print("Inventory:")
             for item in self.inventory:
                 print(item)
+
+    def show_equipment(self):
+        print(self.equipment)
