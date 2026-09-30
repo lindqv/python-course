@@ -76,8 +76,8 @@ class Player(Character):
         while self.current_experience >= self.experience_to_next_level:
             self.level_up()
             print("Player levelled up! Player is now level", self.level)
-                    
-        print(f"Experience status: Level {self.level}. {self.current_experience}/{self.experience_to_next_level} experience points to level up.")
+
+        self.show_experience_status()           
     
     def equip_weapon(self, new_weapon: Weapon):
         current_weapon = self.equipment.weapon
@@ -133,3 +133,9 @@ class Player(Character):
 
     def show_equipment(self):
         print(self.equipment)
+
+    def show_experience_status(self):
+        print(f"Experience status: Level {self.level}. {self.current_experience}/{self.experience_to_next_level} experience points to level up.")
+
+    def show_player_status(self):
+        print(f"{self.health_points}/{self.max_health_points} health points")
