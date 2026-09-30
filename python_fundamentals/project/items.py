@@ -35,3 +35,4 @@ class HealthPotion(Item):
     def use(self, player):
         player.health_points = min(player.health_points + self.healing, player.max_health_points)
         player.inventory.remove(self)
+        print("Player health points is now", player.health_points)

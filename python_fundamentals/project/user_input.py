@@ -3,13 +3,18 @@ from items import Dice, Item
 from dungeon import Room
 
 def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
-    actions = ["Attack", "Skip turn"]
+    actions = ["Attack", "Use item", "Skip turn"]
     choice = choose(actions, "What would you like to do?")
 
     if choice == "Attack":
         enemy_to_attack = choose(enemies, "Which enemy would you like to attack?")
         ability = choose(player.abilities, "Which ability would you like to use?")
         player.attack(enemy_to_attack, ability, dice)
+    elif choice == "Use item":
+        chosen_item = choose_item(player)
+        if chosen_item:
+            chosen_item.use(player)
+            print("Player used", chosen_item)
     else:
         return
 
@@ -24,10 +29,10 @@ def choose_action_after_combat(player: Player, room: Room):
         elif choice == "Show inventory":
             player.show_inventory()
         elif choice == "Use item":
-            choice = choose_item(player)
-            if choice:
-                choice.use(player)
-                print("Player used", choice)
+            chosen_item = choose_item(player)
+            if chosen_item:
+                chosen_item.use(player)
+                print("Player used", chosen_item)
 
 def choose_item(player: Player) -> Item | None:
     player.show_inventory()
