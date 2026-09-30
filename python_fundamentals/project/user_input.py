@@ -1,7 +1,8 @@
 from characters import Player, Character
 from items import Dice
+from dungeon import Room
 
-def choose_action(enemies: list[Character], player: Player, dice: Dice):
+def choose_action_in_combat(enemies: list[Character], player: Player, dice: Dice):
     actions = ["Attack", "Skip turn"]
     choice = choose(actions, "What would you like to do?")
 
@@ -11,6 +12,15 @@ def choose_action(enemies: list[Character], player: Player, dice: Dice):
         player.attack(enemy_to_attack, ability, dice)
     else:
         return
+
+def choose_action_after_combat(player: Player, room: Room):
+    choice = ""
+    while choice != "Go to next room":
+        choice = choose(["Loot", "Rest", "Go to next room"], "What would you like to do?")
+        if choice == "Loot":
+            player.loot(room.items)
+        elif choice == "Rest":
+            player.rest()
 
 def choose(options: list, question: str):
     if len(options) == 1:

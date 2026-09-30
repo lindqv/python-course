@@ -1,5 +1,5 @@
 from characters import Character, Player
-from user_input import choose_action
+from user_input import choose_action_in_combat
 from items import Dice
 
 class Combat:
@@ -15,7 +15,7 @@ class Combat:
                 print(f"    {participant.name}: {participant.health_points}/{participant.max_health_points} health points")
         
             if self.interactive:
-                choose_action(enemies, player, self.dice)
+                choose_action_in_combat(enemies, player, self.dice)
             else:
                 self.automatic_attack(enemies, player)
         

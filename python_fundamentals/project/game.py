@@ -2,7 +2,7 @@ from items import Dice
 from dungeon_data import dungeon
 from player_data import default_player
 from combat import Combat
-from user_input import choose
+from user_input import choose_action_after_combat
 
 class Game:
     def __init__(self, interactive=True):
@@ -22,13 +22,7 @@ class Game:
                 break       
 
             if self.interactive:
-                choice = ""
-                while choice != "Go to next room":
-                    choice = choose(["Loot", "Rest", "Go to next room"], "What would you like to do?")
-                    if choice == "Loot":
-                        self.player.loot(room.items)
-                    elif choice == "Rest":
-                        self.player.rest()
+                choose_action_after_combat(self.player, room)
             else:
                 self.player.loot(room.items)
                 self.player.rest()
