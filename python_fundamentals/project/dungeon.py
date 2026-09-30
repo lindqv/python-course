@@ -1,15 +1,15 @@
-from characters import Character
+from characters import Enemy
 from items import Item
 
 class Room:
-    def __init__(self, enemies: list[Character], items: list[Item] = None):
+    def __init__(self, enemies: list[Enemy], items: list[Item] = None):
         self.enemies = enemies
         if items is None:
             self.items = []
         else:
             self.items = items
 
-    def remove_enemy(self, enemy: Character):
+    def remove_enemy(self, enemy: Enemy):
         self.enemies.remove(enemy)
 
     def has_enemies(self) -> bool:

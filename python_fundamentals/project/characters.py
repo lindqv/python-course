@@ -48,10 +48,13 @@ class Character:
 
     def is_defeated(self) -> bool:
         return self.health_points <= 0
+    
+class Enemy(Character):
+    def __init__(self, name, health_points, level, armour_class, abilities, equipment = None, inventory = None):
+        super().__init__(name, health_points, level, armour_class, abilities, equipment, inventory)
 
     def calculate_experience_points(self):
         return self.max_health_points * self.level
-
 
 class Player(Character):
     def __init__(self, name, health_points, level, armour_class, abilities, equipment = None, inventory = None):

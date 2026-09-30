@@ -1,4 +1,4 @@
-from characters import Character, Player
+from characters import Player, Enemy
 from user_input import choose_action_in_combat
 from items import Dice
 
@@ -7,7 +7,7 @@ class Combat:
         self.dice = dice
         self.interactive = interactive
 
-    def start(self, enemies, player):
+    def start(self, enemies: list[Enemy], player: Player):
         print("Combat started!")
         while enemies:
             print("New turn. Health status:")
@@ -33,12 +33,12 @@ class Combat:
 
         print("Combat ended.")
 
-    def automatic_attack(self, enemies: list[Character], player: Player):
+    def automatic_attack(self, enemies: list[Enemy], player: Player):
         enemy_to_attack = enemies[0]
         ability_to_use = player.abilities[self.dice.choose_index(len(player.abilities))]
         player.attack(enemy_to_attack, ability_to_use, self.dice)
     
-    def handle_defeated_enemies(self, enemies: list[Character], player: Player):
+    def handle_defeated_enemies(self, enemies: list[Enemy], player: Player):
         for enemy in enemies:
             if enemy.is_defeated():
                 enemies.remove(enemy)

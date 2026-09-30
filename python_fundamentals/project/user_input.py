@@ -1,8 +1,8 @@
-from characters import Player, Character
+from characters import Player, Enemy
 from items import Dice
 from dungeon import Room
 
-def choose_action_in_combat(enemies: list[Character], player: Player, dice: Dice):
+def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
     actions = ["Attack", "Skip turn"]
     choice = choose(actions, "What would you like to do?")
 
