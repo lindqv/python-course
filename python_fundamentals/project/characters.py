@@ -89,18 +89,21 @@ class Player(Character):
         self.armour_class = new_armour.armour_class
 
     def loot(self, items: list[Item]):
+        if len(items) == 0:
+            print("There is nothing to loot.")
+
         for item in items:
             if isinstance(item, Weapon):
                 self.equip_weapon(item)
-                print(self.name, "found and equipped weapon", item.name)
+                print(f"{self.name} found and equipped weapon {item.name}.")
             
             elif isinstance(item, Armour):
                 self.equip_armour(item)
-                print(self.name, "found and equipped armour", item.name)
+                print(f"{self.name} found and equipped armour {item.name}.")
             
             else:
                 self.inventory.append(item)
-                print(self.name, "found", item.name, "and put it in their inventory.")
+                print(f"{self.name} found {item.name} and put it in their inventory.")
     
     def rest(self):
         self.health_points = self.max_health_points
