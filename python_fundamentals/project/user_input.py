@@ -23,6 +23,7 @@ def choose_action_after_combat(player: Player, room: Room):
         choice = choose(["Loot", "Rest", "Show equipment", "Show inventory", "Use or equip item", "Go to next room"], "What would you like to do?")
         if choice == "Loot":
             player.loot(room.items)
+            room.items = []
         elif choice == "Rest":
             player.rest()
         elif choice == "Show equipment":
