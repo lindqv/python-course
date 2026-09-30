@@ -2,6 +2,7 @@ from items import Dice
 from dungeon_data import dungeon
 from player_data import default_player
 from user_input import choose_action
+from characters import Character
 
 class Game:
     def __init__(self, interactive=True):
@@ -25,7 +26,9 @@ class Game:
                 if self.interactive:
                     choose_action(room, self.player, self.dice)
                 else:
-                    self.automatic_attack(room)
+                    self.automatic_attack(room.enemies)
+
+                self.handle_defeated_enemies(room.enemies, self.player)
 
                 for enemy in room.enemies:
                     ability_to_use = enemy.abilities[self.dice.choose_index(len(enemy.abilities))]
@@ -42,14 +45,16 @@ class Game:
                 self.player.rest()
                 self.player.loot(room.items)
 
-    def automatic_attack(self, room):
-        enemy_to_attack = room.enemies[0]
+    def automatic_attack(self, enemies: list[Character]):
+        enemy_to_attack = enemies[0]
         ability_to_use = self.player.abilities[self.dice.choose_index(len(self.player.abilities))]
         self.player.attack(enemy_to_attack, ability_to_use, self.dice)
-        
-        if enemy_to_attack.is_defeated():
-            room.enemies.remove(enemy_to_attack)
-            print(enemy_to_attack.name, "was defeated!")
-            experience = enemy_to_attack.calculate_experience_points()
-            self.player.gain_experience_points(experience)
+
+    def handle_defeated_enemies(self, enemies: list[Character], player: Character):
+        for enemy in enemies:
+            if enemy.is_defeated():
+                enemies.remove(enemy)
+                print(enemy.name, "was defeated!")
+                experience = enemy.calculate_experience_points()
+                player.gain_experience_points(experience)
 
