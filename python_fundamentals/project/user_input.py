@@ -14,7 +14,6 @@ def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
         chosen_item = choose_item(player)
         if chosen_item:
             chosen_item.use(player)
-            print("Player used", chosen_item)
     else:
         return
 
@@ -32,7 +31,6 @@ def choose_action_after_combat(player: Player, room: Room):
             chosen_item = choose_item(player)
             if chosen_item:
                 chosen_item.use(player)
-                print("Player used", chosen_item)
 
 def choose_item(player: Player) -> Item | None:
     player.show_inventory()

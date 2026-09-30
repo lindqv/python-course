@@ -80,16 +80,24 @@ class Player(Character):
         current_weapon = self.equipment.weapon
         if current_weapon:
             self.inventory.append(current_weapon)
+            print(self.name, "placed", current_weapon, "in their inventory")
+        if new_weapon in self.inventory:
+            self.inventory.remove(new_weapon)
 
         self.equipment.weapon = new_weapon
+        print(self.name, "is now using", self.equipment.weapon)
 
     def equip_armour(self, new_armour: Armour):
         current_armour = self.equipment.armour
         if current_armour:
             self.inventory.append(current_armour)
+            print(self.name, "placed", current_armour, "in their inventory")
+        if new_armour in self.inventory:
+            self.inventory.remove(new_armour)
     
         self.equipment.armour = new_armour
         self.armour_class = new_armour.armour_class
+        print(self.name, "is now using", self.equipment.armour)
 
     def loot(self, items: list[Item]):
         if len(items) == 0:
