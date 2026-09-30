@@ -26,3 +26,12 @@ class Armour(Item):
     def __init__(self, name: str, armour_class: int):
         super().__init__(name)
         self.armour_class = armour_class
+
+class HealthPotion(Item):
+    def __init__(self, name: str, healing: int):
+        super().__init__(name)
+        self.healing = healing
+
+    def use(self, player):
+        player.health_points = min(player.health_points + self.healing, player.max_health_points)
+        player.inventory.remove(self)

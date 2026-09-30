@@ -1,5 +1,5 @@
 from characters import Player, Enemy
-from items import Dice
+from items import Dice, Item
 from dungeon import Room
 
 def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
@@ -16,14 +16,26 @@ def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
 def choose_action_after_combat(player: Player, room: Room):
     choice = ""
     while choice != "Go to next room":
-        choice = choose(["Loot", "Rest", "Show inventory", "Go to next room"], "What would you like to do?")
+        choice = choose(["Loot", "Rest", "Show inventory", "Use item", "Go to next room"], "What would you like to do?")
         if choice == "Loot":
             player.loot(room.items)
         elif choice == "Rest":
             player.rest()
         elif choice == "Show inventory":
             player.show_inventory()
+        elif choice == "Use item":
+            choice = choose_item(player)
+            if choice:
+                choice.use(player)
+                print("Player used", choice)
 
+def choose_item(player: Player) -> Item | None:
+    player.show_inventory()
+    options = player.inventory + ["Go back"]
+    choice = choose(options, "Which item would you like to use? Or choose 'Go back' to return.")
+    if choice != "Go back":
+        return choice
+        
 def choose(options: list, question: str):
     if len(options) == 1:
         return options[0]
@@ -36,7 +48,7 @@ def choose(options: list, question: str):
     chosen_index = choice - 1
     return options[chosen_index]
 
-def choose_integer(min: int, max: int):
+def choose_integer(min: int, max: int) -> int:
     while True:
         user_input = input(f"Make a choice by typing an integer in the range {min} to {max}: ").strip()
         try:

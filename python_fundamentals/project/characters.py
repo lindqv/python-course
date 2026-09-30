@@ -115,7 +115,7 @@ class Player(Character):
     def show_inventory(self):
         if len(self.inventory) == 0:
             print("The inventory is empty.")
-
-        print("Inventory:")
-        for item in self.inventory:
-            print(item)
+        else:
+            print("Inventory:")
+            for item in self.inventory:
+                print(item)
