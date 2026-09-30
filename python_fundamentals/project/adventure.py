@@ -12,12 +12,13 @@ class StartScreen:
     def choose_mode(self):
         return choose(self.options, "Choose an option to start the game:")
 
+    def start_mode(self, choice: str):
+        if choice == "Start game":
+            Game().play()
+        else:
+            Game(interactive=False).play()
+
 start_screen = StartScreen("Green Dragon Quest: a dungeon crawler adventure", ["Start game", "Automatic mode (for testing)"])
 start_screen.display()
 choice = start_screen.choose_mode()
-print(choice)
-
-if choice == "Start game":
-    Game().play()
-else:
-    Game(interactive=False).play()
+start_screen.start_mode(choice)
