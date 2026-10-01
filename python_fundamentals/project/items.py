@@ -17,7 +17,7 @@ class Item:
     def __str__(self):
         return self.name
 
-    def use(self, player):
+    def use(self, _):
         print("This item cannot be used.")
 
 class Weapon(Item):
