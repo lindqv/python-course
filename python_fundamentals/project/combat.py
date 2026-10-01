@@ -6,6 +6,10 @@ class Combat:
     def __init__(self, dice: Dice, interactive=True):
         self.dice = dice
         self.interactive = interactive
+        self.statistics = {
+            "enemy_attacks": 0,
+            "enemies_defeated": 0,
+        }
 
     def start(self, enemies: list[Enemy], player: Player):
         print("Combat started!")
@@ -20,17 +24,13 @@ class Combat:
                 self.automatic_attack(enemies, player)
         
             self.handle_defeated_enemies(enemies, player)
-        
-            for enemy in enemies:
-                ability_to_use = enemy.abilities[self.dice.choose_index(len(enemy.abilities))]
-                enemy.attack(player, ability_to_use, self.dice)
+            self.enemies_attack(enemies, player)
         
             if player.is_defeated():
                 print(player.name, "was defeated. Game over!")
                 break
         
             print("\n")
-
         print("Combat ended.")
 
     def automatic_attack(self, enemies: list[Enemy], player: Player):
@@ -38,6 +38,12 @@ class Combat:
         available_abilities = player.get_available_abilities()
         ability_to_use = available_abilities[self.dice.choose_index(len(available_abilities))]
         player.attack(enemy_to_attack, ability_to_use, self.dice)
+
+    def enemies_attack(self, enemies: list[Enemy], player: Player):
+        for enemy in enemies:
+            ability_to_use = enemy.abilities[self.dice.choose_index(len(enemy.abilities))]
+            enemy.attack(player, ability_to_use, self.dice)
+            self.statistics["enemy_attacks"] += 1
     
     def handle_defeated_enemies(self, enemies: list[Enemy], player: Player):
         for enemy in enemies:
@@ -46,3 +52,4 @@ class Combat:
                 print(enemy.name, "was defeated!")
                 experience = enemy.calculate_experience_points()
                 player.gain_experience_points(experience)
+                self.statistics["enemies_defeated"] += 1
