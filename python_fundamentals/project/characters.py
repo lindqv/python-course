@@ -115,7 +115,7 @@ class Player(Character):
             self.inventory.remove(new_weapon)
 
         self.equipment.weapon = new_weapon
-        print(self.name, "is now using", self.equipment.weapon)
+        print(f"{self.name} is now using {self.equipment.weapon}.")
 
     def equip_armour(self, new_armour: Armour):
         current_armour = self.equipment.armour
@@ -127,7 +127,7 @@ class Player(Character):
     
         self.equipment.armour = new_armour
         self.armour_class = new_armour.armour_class
-        print(self.name, "is now using", self.equipment.armour)
+        print(f"{self.name} is now using {self.equipment.armour}")
 
     def loot(self, items: list[Item]):
         if len(items) == 0:
@@ -136,16 +136,16 @@ class Player(Character):
 
         for item in items:
             if isinstance(item, Weapon):
-                self.equip_weapon(item)
                 print(f"{self.name} found and equipped weapon {item.name}.")
+                self.equip_weapon(item)
                     
             elif isinstance(item, Armour):
-                self.equip_armour(item)
                 print(f"{self.name} found and equipped armour {item.name}.")
+                self.equip_armour(item)
                     
             else:
-                self.inventory.append(item)
                 print(f"{self.name} found {item.name} and put it in their inventory.")
+                self.inventory.append(item)
 
         items.clear()
     
