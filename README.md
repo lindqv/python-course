@@ -22,7 +22,7 @@ The a player fights their way through a dungeon whose rooms are filled with dang
 #### 3. How to run it
 1. Clone this repo.
 2. Navigate to `python_fundamentals/project` using your terminal.
-3. Run `python start_screen.py` to start the game.
+3. Run `python start.py` to start the game.
 4. Follow the instructions on the screen to run the game. Choose from starting a new game (interactive mode), or running the game in automatic mode. Make your choice using keyboard input.
 
 ### Labs
