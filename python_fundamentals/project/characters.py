@@ -19,7 +19,7 @@ class CharacterEquipment:
 
 class Character:
     def __init__(self, name: str, health_points: int, level: int, armour_class: int, abilities: list[Ability], 
-                 equipment: CharacterEquipment = None, inventory: list[Item] = None):
+                 equipment: CharacterEquipment = None, inventory: list[Item] = None, hit_bonus=5):
         self.name = name
         self.health_points = health_points
         self.max_health_points = health_points
@@ -28,6 +28,7 @@ class Character:
         self.equipment = equipment
         self.inventory = inventory
         self.abilities = abilities
+        self.hit_bonus = hit_bonus
         self.current_experience = 0
         self.experience_to_next_level = self.level * 10
 
@@ -38,12 +39,12 @@ class Character:
         return f"{self.name}, {self.health_points}/{self.max_health_points} health points"
 
     def attack(self, target: 'Character', ability: Ability, dice: Dice):
-        if dice.roll() > target.armour_class:
+        if dice.roll() + self.hit_bonus > target.armour_class:
             weapon_bonus = 0
             if self.equipment and self.equipment.weapon:
                 weapon_bonus = self.equipment.weapon.damage_bonus
 
-            attack_damage = (dice.roll(ability.minimum_damage, ability.maximum_damage) + weapon_bonus) * self.level
+            attack_damage = (dice.roll(ability.minimum_damage, ability.maximum_damage) + weapon_bonus)
             target.health_points -= attack_damage
             print(f"{self.name} attacked {target.name} with {ability.ability_name} for {attack_damage} damage")
         else:
@@ -68,6 +69,10 @@ class Player(Character):
         self.level += 1
         self.experience_to_next_level = self.level * 10
         self.max_health_points += 6
+
+        for ability in self.abilities:
+            ability.minimum_damage += 1
+            ability.maximum_damage += 1
 
     def gain_experience_points(self, experience: int):
         self.current_experience += experience

@@ -13,7 +13,7 @@ health_potion = HealthPotion("Large health potion", 10)
 rat_boss_room = Room([rat_boss], [longsword, health_potion])
 
 gelatinous_cube_abilities = [Ability("Ooze", 3, 6), Ability("Engulf", 7, 10)]
-gelatinous_cube = Enemy("Gelatinous cube", health_points=84, level=3, armour_class=8, abilities=gelatinous_cube_abilities)
+gelatinous_cube = Enemy("Gelatinous cube", health_points=50, level=3, armour_class=8, abilities=gelatinous_cube_abilities)
 gelatinous_armour = Armour("Gelatinous armour", 18)
 gelatinous_cube_room = Room([gelatinous_cube], [gelatinous_armour])
 
@@ -26,15 +26,14 @@ spectator_abilities = [Ability("Wounding ray", 10, 25), Ability("Fear ray", 10, 
 spectator = Enemy("Spectator", health_points=39, level=5, armour_class=14, abilities=spectator_abilities)
 spectator_room = Room([spectator], [greatsword])
 
-wyrmling_abilities = [Ability("Poison breath", 5, 10), Ability("Bite", 7, 10)]
-wyrmling1 = Enemy("Green dragon wyrmling 1", health_points=38, level=4, armour_class=17, abilities=wyrmling_abilities)
-wyrmling2 = Enemy("Green dragon wyrmling 2", health_points=38, level=4, armour_class=17, abilities=wyrmling_abilities)
-wyrmling3 = Enemy("Green dragon wyrmling 3", health_points=38, level=4, armour_class=17, abilities=wyrmling_abilities)
+wyrmling_abilities = [Ability("Poison breath", 3, 5), Ability("Bite", 7, 10)]
+wyrmling1 = Enemy("Green dragon wyrmling 1", health_points=38, level=4, armour_class=16, abilities=wyrmling_abilities)
+wyrmling2 = Enemy("Green dragon wyrmling 2", health_points=38, level=4, armour_class=16, abilities=wyrmling_abilities)
+wyrmling3 = Enemy("Green dragon wyrmling 3", health_points=38, level=4, armour_class=16, abilities=wyrmling_abilities)
 wyrmling_room = Room([wyrmling1, wyrmling2, wyrmling3])
 
-wyrmling4 = Enemy("Green dragon wyrmling 4", health_points=38, level=4, armour_class=17, abilities=wyrmling_abilities)
-dragon_abilities = [Ability("Poison breath", 28, 56), Ability("Bite", 17, 26), Ability("Claw", 13, 18), Ability("Tail", 15, 22), Ability("Frightful presence", 20, 25)]
-green_dragon = Enemy("Green dragon", health_points=207, level=7, armour_class=19, abilities=dragon_abilities)
-dragon_room = Room([green_dragon, wyrmling4])
+dragon_abilities = [Ability("Poison breath", 20, 25), Ability("Bite", 15, 19), Ability("Claw", 13, 18), Ability("Tail", 13, 17), Ability("Frightful presence", 12, 15)]
+green_dragon = Enemy("Green dragon", health_points=207, level=7, armour_class=17, abilities=dragon_abilities)
+dragon_room = Room([green_dragon])
 
-dungeon = Dungeon([rat_room, rat_boss_room, gelatinous_cube_room, displacer_beast_room, spectator_room, wyrmling_room, dragon_room])
+dungeon = Dungeon([rat_room, rat_boss_room, gelatinous_cube_room, spectator_room, displacer_beast_room, wyrmling_room, dragon_room])
