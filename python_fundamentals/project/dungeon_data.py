@@ -33,7 +33,7 @@ wyrmling3 = Enemy("Green dragon wyrmling 3", health_points=38, level=4, armour_c
 wyrmling_room = Room([wyrmling1, wyrmling2, wyrmling3])
 
 dragon_abilities = [Ability("Poison breath", 20, 25), Ability("Bite", 15, 19), Ability("Claw", 13, 18), Ability("Tail", 13, 17), Ability("Frightful presence", 12, 15)]
-green_dragon = Enemy("Green dragon", health_points=207, level=7, armour_class=17, abilities=dragon_abilities)
+green_dragon = Enemy("Green dragon", health_points=207, level=2, armour_class=17, abilities=dragon_abilities)
 dragon_room = Room([green_dragon])
 
 dungeon = Dungeon([rat_room, rat_boss_room, gelatinous_cube_room, spectator_room, displacer_beast_room, wyrmling_room, dragon_room])
