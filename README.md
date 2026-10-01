@@ -17,6 +17,7 @@ The a player fights their way through a dungeon whose rooms are filled with dang
 * Equipment: change the player's weapon and armour to become more powerful.
 * Player progression: level up by defeating enemies and gaining experience points.
 * Explore the room after its enemies have been defeated. You can loot, view status information, show your inventory, use items or change equipment. You can also rest to regain your health points and abilities.
+* View statistics about your adventure at the end of a game.
 * Customise your adventure by editing your player in `player_data.py`, or the dungeon in `dungeon_data.py`.
 
 #### 3. How to run it
