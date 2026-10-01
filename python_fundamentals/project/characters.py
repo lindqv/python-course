@@ -36,6 +36,10 @@ class Character:
         self.hit_bonus = hit_bonus
         self.current_experience = 0
         self.experience_to_next_level = self.level * 10
+        self.statistics = {
+            "attacks": 0,
+            "hits": 0,
+        }
 
         if inventory is None:
             self.inventory = []
@@ -44,7 +48,9 @@ class Character:
         return f"{self.name}, {self.health_points}/{self.max_health_points} health points"
 
     def attack(self, target: 'Character', ability: Ability, dice: Dice):
+        self.statistics["attacks"] += 1
         if dice.roll() + self.hit_bonus > target.armour_class:
+            self.statistics["hits"] += 1
             weapon_bonus = 0
             if self.equipment and self.equipment.weapon:
                 weapon_bonus = self.equipment.weapon.damage_bonus

@@ -27,3 +27,19 @@ class Game:
                 self.player.loot(room.items)
                 self.player.rest()
 
+        print("The adventure ends.")
+        self.show_statistics()
+
+    def show_statistics(self):
+        player_attacks = self.player.statistics.get("attacks", 0)
+        player_hits = self.player.statistics.get("hits", 0)
+        player_hit_rate = (player_hits / player_attacks) * 100
+
+        print("\n")
+        print("Adventure statistics:")
+        print("Enemy attacks:", self.combat.statistics.get("enemy_attacks", 0))
+        print("Enemies defeated:", self.combat.statistics.get("enemies_defeated", 0))
+        print("Player attacks:", player_attacks)
+        print("Player hits:", player_hits)
+        print(f"Player hit rate: {player_hit_rate:.1f} %")
+
