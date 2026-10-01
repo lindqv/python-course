@@ -8,7 +8,8 @@ def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
 
     if choice == "Attack":
         enemy_to_attack = choose(enemies, "Which enemy would you like to attack?")
-        ability = choose(player.abilities, "Which ability would you like to use?")
+        available_abilities = player.get_available_abilities()
+        ability = choose(available_abilities, "Which ability would you like to use?")
         player.attack(enemy_to_attack, ability, dice)
     elif choice == "Use or equip item":
         chosen_item = choose_item(player)

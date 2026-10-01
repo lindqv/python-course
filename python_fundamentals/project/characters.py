@@ -1,12 +1,17 @@
 from items import Item, Weapon, Armour, Dice
 
 class Ability:
-    def __init__(self, ability_name: str, minimum_damage: int, maximum_damage: int):
+    def __init__(self, ability_name: str, minimum_damage: int, maximum_damage: int, has_limited_uses: bool = False, limited_uses: int | None = None):
         self.ability_name = ability_name
         self.minimum_damage = minimum_damage
         self.maximum_damage = maximum_damage
+        self.has_limited_uses = has_limited_uses
+        self.limited_uses = limited_uses
+        self.maximum_limited_uses = limited_uses
 
     def __str__(self):
+        if self.has_limited_uses:
+            return f"{self.ability_name}, {self.limited_uses}/{self.maximum_limited_uses} uses left"
         return self.ability_name
 
 class CharacterEquipment:
@@ -46,12 +51,29 @@ class Character:
 
             attack_damage = (dice.roll(ability.minimum_damage, ability.maximum_damage) + weapon_bonus)
             target.health_points -= attack_damage
+            if ability.has_limited_uses:
+                ability.limited_uses -= 1
             print(f"{self.name} attacked {target.name} with {ability.ability_name} for {attack_damage} damage")
         else:
             print(f"{self.name} attacked {target.name} with {ability.ability_name}, but missed")
 
     def is_defeated(self) -> bool:
         return self.health_points <= 0
+
+    def get_available_abilities(self):
+        available_abilities = []
+        for ability in self.abilities:
+            if ability.has_limited_uses:
+                if ability.limited_uses >= 1:
+                    available_abilities.append(ability)
+            else:
+                available_abilities.append(ability)
+        return available_abilities
+
+    def reset_limited_use_abilities(self):
+        for ability in self.abilities:
+            if ability.has_limited_uses:
+                ability.limited_uses = ability.maximum_limited_uses
     
 class Enemy(Character):
     def __init__(self, name, health_points, level, armour_class, abilities, equipment = None, inventory = None):
@@ -129,7 +151,8 @@ class Player(Character):
     
     def rest(self):
         self.health_points = self.max_health_points
-        print(self.name, "rested and regained their health points.")
+        self.reset_limited_use_abilities()
+        print(self.name, "rested and regained their health points and ability uses.")
 
     def show_inventory(self):
         if len(self.inventory) == 0:

@@ -35,7 +35,8 @@ class Combat:
 
     def automatic_attack(self, enemies: list[Enemy], player: Player):
         enemy_to_attack = enemies[0]
-        ability_to_use = player.abilities[self.dice.choose_index(len(player.abilities))]
+        available_abilities = player.get_available_abilities()
+        ability_to_use = available_abilities[self.dice.choose_index(len(player.abilities))]
         player.attack(enemy_to_attack, ability_to_use, self.dice)
     
     def handle_defeated_enemies(self, enemies: list[Enemy], player: Player):
