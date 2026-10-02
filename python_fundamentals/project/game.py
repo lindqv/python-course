@@ -1,6 +1,8 @@
 from items import Dice
 from dungeon_data import dungeon
 from player_data import default_player
+from quest_data import default_quests
+from quests import QuestLog
 from combat import Combat
 from user_input import choose_action_after_combat
 
@@ -10,16 +12,21 @@ class Game:
         self.combat = Combat(self.dice, interactive)
         self.player = default_player
         self.dungeon = dungeon
+        self.quest_log = QuestLog(default_quests)
         self.interactive = interactive
 
     def play(self):
-        for number, room in enumerate(self.dungeon.rooms, start=1):
-            print("Room", number)
+        for room_number, room in enumerate(self.dungeon.rooms, start=1):
+            print("Room", room_number)
+            self.quest_log.update_quests(self.combat.statistics.get("enemies_defeated", 0), room_number)
             if room.has_enemies():
                 self.combat.start(room.enemies, self.player)  
 
             if self.player.is_defeated():
                 break       
+
+            self.quest_log.update_quests(self.combat.statistics.get("enemies_defeated", 0), room_number)
+            self.quest_log.show_status()
 
             if self.interactive:
                 choose_action_after_combat(self.player, room)
@@ -28,6 +35,7 @@ class Game:
                 self.player.rest()
 
         print("The adventure ends.")
+        self.quest_log.show_status()
         self.show_statistics()
 
     def show_statistics(self):
