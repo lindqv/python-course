@@ -29,6 +29,7 @@ class QuestLog:
         self.quests = quests
 
     def show_status(self):
+        print("\n")
         print("Quest log:")
         if len(self.quests) == 0:
             print("There are no quests.")

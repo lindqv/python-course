@@ -25,14 +25,14 @@ class Game:
             if self.player.is_defeated():
                 break       
 
+            self.quest_log.update_quests(self.combat.statistics.get("enemies_defeated", 0), room_number)
+            self.quest_log.show_status()
+
             if self.interactive:
                 choose_action_after_combat(self.player, room)
             else:
                 self.player.loot(room.items)
                 self.player.rest()
-
-            self.quest_log.update_quests(self.combat.statistics.get("enemies_defeated", 0), room_number)
-            self.quest_log.show_status()
 
         print("The adventure ends.")
         self.quest_log.show_status()
