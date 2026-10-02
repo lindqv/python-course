@@ -49,10 +49,3 @@ class QuestLog:
             elif isinstance(quest.objective, RoomVisitObjective):
                 if quest.objective.is_complete(visited_rooms):
                     quest.complete()
-
-
-
-
-
-
-    
