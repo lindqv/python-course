@@ -3,20 +3,25 @@ from items import Dice, Item
 from dungeon import Room
 
 def choose_action_in_combat(enemies: list[Enemy], player: Player, dice: Dice):
-    actions = ["Attack", "Use or equip item", "Skip turn"]
-    choice = choose(actions, "What would you like to do?")
+    choice_made = False
+    while not choice_made:
+        actions = ["Attack", "Use or equip item", "Skip turn"]
+        choice = choose(actions, "What would you like to do?")
 
-    if choice == "Attack":
-        enemy_to_attack = choose(enemies, "Which enemy would you like to attack?")
-        available_abilities = player.get_available_abilities()
-        ability = choose(available_abilities, "Which ability would you like to use?")
-        player.attack(enemy_to_attack, ability, dice)
-    elif choice == "Use or equip item":
-        chosen_item = choose_item(player)
-        if chosen_item:
-            chosen_item.use(player)
-    else:
-        return
+        if choice == "Attack":
+            enemy_to_attack = choose(enemies, "Which enemy would you like to attack?")
+            available_abilities = player.get_available_abilities()
+            ability = choose(available_abilities, "Which ability would you like to use?")
+            player.attack(enemy_to_attack, ability, dice)
+            choice_made = True
+        elif choice == "Use or equip item":
+            chosen_item = choose_item(player)
+            if chosen_item:
+                chosen_item.use(player)
+                choice_made = True
+        else:
+            choice_made = True
+            return
 
 def choose_action_after_combat(player: Player, room: Room):
     choice = ""
