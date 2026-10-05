@@ -34,3 +34,10 @@ END AS price_level
 FROM products;
 
 SELECT COALESCE(first_name, 'Unknown'), COALESCE(city, 'Unknown') FROM customers;
+
+SELECT *, strftime('%m', joined_date) AS month from customers 
+where month IN ('01', '02', '03', '04', '05', '06');
+
+SELECT * FROM products ORDER BY LENGTH(name) DESC LIMIT 1;
+
+SELECT email, substr(email, 1, instr(email, '@') - 1) AS username FROM customers;
