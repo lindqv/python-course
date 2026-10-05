@@ -41,3 +41,11 @@ where month IN ('01', '02', '03', '04', '05', '06');
 SELECT * FROM products ORDER BY LENGTH(name) DESC LIMIT 1;
 
 SELECT email, substr(email, 1, instr(email, '@') - 1) AS username FROM customers;
+
+-- Challenge questions level 3
+SELECT * FROM products where price > (SELECT AVG(price) from products);
+
+SELECT *, name || " costs " || ROUND(price) || " kr" as price_description FROM products;
+SELECT *, name || " costs " || CAST(price AS INT) || " kr" as price_description FROM products;
+
+SELECT city, COUNT(customer_id) AS customer_count FROM customers GROUP BY city ORDER BY customer_count DESC;
