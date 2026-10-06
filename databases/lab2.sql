@@ -56,10 +56,45 @@ INSERT INTO suppliers (supplier_id, name, email) VALUES (3, "Nordic Textiles", "
 CREATE TABLE coupons (
 	code TEXT NOT NULL PRIMARY KEY,
 	discount_percent INTEGER NOT NULL CHECK(discount_percent BETWEEN 1 AND 90),
-	valid_until DATE NOT NULL
+	valid_until TEXT NOT NULL
 );
 
 -- This gives a CHECK constraint failed error.
 INSERT INTO coupons (code, discount_percent, valid_until) VALUES ('SUMMER20', 95, '2026-10-31')
 -- The line below works.
 INSERT INTO coupons (code, discount_percent, valid_until) VALUES ('SUMMER20', 20, '2026-10-31')
+
+
+-- Extra challenges level 2
+
+-- This supplier gets id 3. 
+-- If an integer primary key is not given a value it will be automatically filled with an unused integer.
+-- This is usually one more than the current largest ROWID in use.
+INSERT INTO suppliers (name) VALUES ("Global Textiles");
+SELECT * FROM suppliers;
+
+ALTER TABLE suppliers RENAME COLUMN email TO contact_email;
+SELECT * FROM suppliers;
+
+PRAGMA table_info(products);
+
+
+CREATE TABLE product_suppliers (
+	purchase_price REAL CHECK(purchase_price > 0),
+	product_id INTEGER NOT NULL,
+	supplier_id INTEGER NOT NULL,
+	FOREIGN KEY (product_id) REFERENCES products(product_id),
+	FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id),
+	PRIMARY KEY (product_id, supplier_id)
+);
+
+INSERT INTO product_suppliers (purchase_price, product_id, supplier_id) VALUES (100, 1, 99);
+
+
+CREATE TABLE campaigns (
+	name TEXT,
+	start_date TEXT,
+	end_date TEXT CHECK(end_date > start_date)
+);
+
+INSERT INTO campaigns (name, start_date, end_date) VALUES ('New campaign', '2026-10-06', '2026-10-01');
