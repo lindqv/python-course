@@ -27,4 +27,4 @@ The a player fights their way through a dungeon whose rooms are filled with dang
 4. Follow the instructions on the screen to run the game. Choose from starting a new game (interactive mode), or running the game in automatic mode. Make your choice using keyboard input.
 
 ## Labs
-This repo also contains my solutions to labs 1-9.
+This folder also contains my solutions to labs 1-9.
