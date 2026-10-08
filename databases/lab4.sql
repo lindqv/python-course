@@ -50,4 +50,10 @@ FROM products
 LEFT JOIN order_items ON order_items.product_id = products.product_id
 WHERE order_id IS NULL;
 
-
+SELECT customers.first_name, products.name AS product_name, order_items.quantity, customers.city
+FROM customers
+JOIN orders ON orders.customer_id = customers.customer_id 
+JOIN order_items ON order_items.order_id = orders.order_id
+JOIN products ON products.product_id = order_items.product_id
+WHERE customers.city = 'Uppsala'
+ORDER BY customers.first_name;
