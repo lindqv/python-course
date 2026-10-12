@@ -31,7 +31,6 @@ def add_product(conn):
     category = input("Category: ")
     price = input_float("Price: ")
     stock = int(input("Stock: "))
-    
     conn.execute(
         "INSERT INTO products (name, category, price, stock) VALUES (?, ?, ?, ?)",
         (name, category, price, stock))
@@ -72,11 +71,26 @@ def show_order_reciept(conn):
     for (product_name, quantity, unit_price, line_total) in rows:
         print(f"{product_name:<20} {quantity:<10} {unit_price:<10} {line_total:<10}")
 
+def show_top_products(conn, limit=3):
+    cursor = conn.execute("SELECT products.name, SUM(quantity) AS total_sold " \
+                            "FROM order_items " \
+                            "JOIN products ON products.product_id = order_items.product_id " \
+                            "GROUP BY order_items.product_id " \
+                            "ORDER BY total_sold DESC "\
+                            "LIMIT ?",
+                            (limit,))
+    rows = cursor.fetchall()
+
+    for number, row in enumerate(rows, start=1):
+        name, amount = row
+        print(f"{number}. {name}, {amount} sold")
+
 def main():
     conn = connect()
     while True:
         print("\n1) List products  2) Search customers  3) Add product  " \
-        "4) Change stock of product  5) Show order reciept  0) Quit")
+        "4) Change stock of product  5) Show order reciept  6) Show top 3 best-selling products  " \
+        "0) Quit")
         choice = input("> ")
         if choice == "1":
             list_products(conn)
@@ -88,6 +102,8 @@ def main():
             change_stock(conn)
         elif choice == "5":
             show_order_reciept(conn)
+        elif choice == "6":
+            show_top_products(conn)
         elif choice == "0":
             break
     conn.close()
