@@ -38,17 +38,34 @@ def add_product(conn):
     print("Saved!")
 
 def change_stock(conn):
-    product_id = input("Product id: ")
-    new_stock = input("New stock amount: ")
+    product_id = int(input("Product id: "))
+    new_stock = int(input("New stock amount: "))
     conn.execute("UPDATE products SET stock = ? WHERE product_id = ?", (new_stock, product_id))
     conn.commit()
     print("Saved!")
- 
- 
+
+
+def show_order_reciept(conn):
+    order_id = int(input("Order id: "))
+    cursor = conn.execute("SELECT p.name, oi.quantity, p.price, oi.quantity * p.price " \
+                            "FROM orders o " \
+                            "JOIN order_items oi ON oi.order_id = o.order_id " \
+                            "JOIN products p ON p.product_id = oi.product_id " \
+                            "WHERE o.order_id = ?",
+                            (order_id,))
+    rows = cursor.fetchall()
+    
+    if rows:
+        print("Reciept for order", order_id)
+        print(f"{'Name':<20} {'Quantity':<10} {'Unit price':<10} {'Line total':<10}")
+    for (product_name, quantity, unit_price, line_total) in rows:
+        print(f"{product_name:<20} {quantity:<10} {unit_price:<10} {line_total:<10}")
+
 def main():
     conn = connect()
     while True:
-        print("\n1) List products  2) Search customers  3) Add product  4) Change stock of product  0) Quit")
+        print("\n1) List products  2) Search customers  3) Add product  " \
+        "4) Change stock of product  5) Show order reciept  0) Quit")
         choice = input("> ")
         if choice == "1":
             list_products(conn)
@@ -58,6 +75,8 @@ def main():
             add_product(conn)
         elif choice == "4":
             change_stock(conn)
+        elif choice == "5":
+            show_order_reciept(conn)
         elif choice == "0":
             break
     conn.close()
