@@ -29,13 +29,24 @@ def search_customers(conn):
 def add_product(conn):
     name = input("Name: ")
     category = input("Category: ")
-    price = float(input("Price: "))
+    price = input_float("Price: ")
     stock = int(input("Stock: "))
+    
     conn.execute(
         "INSERT INTO products (name, category, price, stock) VALUES (?, ?, ?, ?)",
         (name, category, price, stock))
     conn.commit()
     print("Saved!")
+
+def input_float(prompt):
+    while True:
+        try:
+            value = float(input(prompt))
+            break
+        except:
+            print("Invalid input, try again.")
+            continue
+    return value
 
 def change_stock(conn):
     product_id = int(input("Product id: "))
@@ -54,7 +65,7 @@ def show_order_reciept(conn):
                             "WHERE o.order_id = ?",
                             (order_id,))
     rows = cursor.fetchall()
-    
+
     if rows:
         print("Reciept for order", order_id)
         print(f"{'Name':<20} {'Quantity':<10} {'Unit price':<10} {'Line total':<10}")
