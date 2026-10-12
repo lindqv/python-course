@@ -29,34 +29,24 @@ def search_customers(conn):
 def add_product(conn):
     name = input("Name: ")
     category = input("Category: ")
-    price = input_float("Price: ")
-    stock = int(input("Stock: "))
+    price = input_validation("Price: ", float)
+    stock = input_validation("Stock: ", int)
     conn.execute(
         "INSERT INTO products (name, category, price, stock) VALUES (?, ?, ?, ?)",
         (name, category, price, stock))
     conn.commit()
     print("Saved!")
 
-def input_float(prompt):
-    while True:
-        try:
-            value = float(input(prompt))
-            break
-        except:
-            print("Invalid input, try again.")
-            continue
-    return value
-
 def change_stock(conn):
-    product_id = int(input("Product id: "))
-    new_stock = int(input("New stock amount: "))
+    product_id = input_validation("Product id: ", int)
+    new_stock = input_validation("New stock amount: ", int)
     conn.execute("UPDATE products SET stock = ? WHERE product_id = ?", (new_stock, product_id))
     conn.commit()
     print("Saved!")
 
 
 def show_order_reciept(conn):
-    order_id = int(input("Order id: "))
+    order_id = input_validation("Order id: ", int)
     cursor = conn.execute("SELECT p.name, oi.quantity, p.price, oi.quantity * p.price " \
                             "FROM orders o " \
                             "JOIN order_items oi ON oi.order_id = o.order_id " \
@@ -84,6 +74,16 @@ def show_top_products(conn, limit=3):
     for number, row in enumerate(rows, start=1):
         name, amount = row
         print(f"{number}. {name}, {amount} sold")
+
+def input_validation(prompt, type):
+    while True:
+        try:
+            value = type(input(prompt))
+            break
+        except:
+            print("Invalid input, try again.")
+            continue
+    return value
 
 def main():
     conn = connect()
