@@ -20,3 +20,43 @@ print(sandals.get("stock"))
 
 for customers in db.customers.find({"newsletter": True}):
     print(customers.get("first_name"))
+
+result = db.customers.insert_one({
+    "first_name": "Sanne",
+    "last_name": "Lindqvist",
+    "email": "s.lindqvist@example.com",
+    "city": "Stockholm"
+    })
+
+pprint(db.customers.find_one({"_id": result.inserted_id}))
+
+db.products.insert_many([
+    {
+        "_id": 13,
+        "name": "Knit sweater", 
+        "category": "Clothing",
+        "price": 399,
+        "stock": 15,
+        "tags": ["winter"],
+        "details": {"color": "grey", "material": "cotton"},
+    }, 
+    {
+        "_id": 14,
+        "name": "Corduroy trousers", 
+        "category": "Clothing",
+        "price": 499,
+        "stock": 10,
+        "tags": ["winter"],
+        "details": {"color": "green", "material": "cotton"},
+    }
+])
+
+print(db.products.count_documents({}))
+
+for customer in db.customers.find():
+    print(f"{customer.get('first_name')} {customer.get('last_name')} ({customer.get('city')})")
+
+for order in db.orders.find():
+    order_items = order.get("items", [])
+    order_items_count = sum(item.get("quantity", 0) for item in order_items)
+    print(f"Order {order.get('_id')}: {order_items_count} items")
