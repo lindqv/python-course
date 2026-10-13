@@ -12,3 +12,11 @@ for customer in db.customers.find({"city": "Göteborg"}):
 
 for product in db.products.find():
     print(product.get("name"), product.get("price"))
+
+print(db.customers.count_documents({"city": "Uppsala"}))
+
+sandals = db.products.find_one({"name": "Sandals"})
+print(sandals.get("stock"))
+
+for customers in db.customers.find({"newsletter": True}):
+    print(customers.get("first_name"))
