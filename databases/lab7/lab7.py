@@ -13,3 +13,12 @@ for customer in db.customers.find({"city": {"$in": ["Stockholm", "Malmö"]}}):
 
 for product in db.products.find({"details.color": "white"}):
     print(product["name"])
+
+for product in db.products.find({"tags": "sport"}):
+    print(product["name"])
+
+for product in db.products.find().sort("price").limit(5):
+    print(product["name"], product["price"])
+
+for order in db.orders.find({"items.product_id": 2}):
+    print("Order with id", order["_id"], "has product with id 2")
