@@ -28,6 +28,9 @@ db.create_collection("books", validator={
     }
 })
 
+db.books.create_index( { "title": 1 } )
+
+
 db.create_collection("members", validator={
     '$jsonSchema': {
         'bsonType': "object",
