@@ -5,11 +5,11 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client["library"]
 
 db.create_collection("books", validator={
-      '$jsonSchema': {
-         'bsonType': "object",
-         'title': "Book Object Validation",
-         'required': [ "title", "author", "copies" ],
-         'properties': {
+    '$jsonSchema': {
+        'bsonType': "object",
+        'title': "Book Object Validation",
+        'required': [ "title", "author", "copies" ],
+        'properties': {
             'title': {
                'bsonType': "string",
                'description': "'title' must be a string and is required"
@@ -23,9 +23,28 @@ db.create_collection("books", validator={
                'minimum': 0,
                'description': "'copies' must be an integer greater than or equal to 0, and is required"
             },
-         }
-      }
-   })
+        }
+    }
+})
+
+db.create_collection("members", validator={
+    '$jsonSchema': {
+        'bsonType': "object",
+        'title': "Member Object Validation",
+        'required': [ "name", "email" ],
+        'properties': {
+            'name': {
+               'bsonType': "string",
+               'description': "'name' must be a string and is required"
+            },
+            'email': {
+                'bsonType': "string",
+                'pattern': "^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$",
+                'description': "'email' must be a valid email address and is required"
+            },
+        }
+    }
+})
 
 books = [
     {"_id": 1, "title": "Orlando", "author": "Virginia Woolf", "genre": "Fiction", "copies": 1},
