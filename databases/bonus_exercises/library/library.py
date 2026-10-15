@@ -1,5 +1,7 @@
 from pymongo import MongoClient
 from pymongo.cursor import Cursor
+from bson.objectid import ObjectId
+
 client = MongoClient("mongodb://localhost:27017/")
 db = client["library"]
 
@@ -8,24 +10,39 @@ def main():
     while True:
         print("What would you like to do?")
         print("1. Search for books")
-        print("2. Quit")
+        print("2. View loans")
+        print("3. Quit")
         choice = int(input("Choose by typing an integer: "))
 
         if choice == 1:
             query = input("Enter a search query: ")
             result = search_for_books(query)
             print_book_search_result(result)
-        elif choice == 2:
+        if choice == 2:
+            result = get_all_loans()
+            print_loans(result)
+        elif choice == 3:
             break
 
 def search_for_books(query: str):
-    result = db.books.find({"$text": {"$search": query}})
-    return result
+    return db.books.find({"$text": {"$search": query}})
 
 def print_book_search_result(result: Cursor):
     for entry in result:
         print(f"{entry.get('title', 'Untitled')} by {entry.get('author', 'Unknown author')}")
         print(f"{entry.get('genre', 'Unknown genre')}")
         print(f"{entry.get('copies', 0)} copies available")
+
+def get_all_loans():
+    return db.loans.find()
+
+def get_loan_by_id(member_id: ObjectId):
+    return db.loans.find({"member_id": member_id})
+
+def print_loans(result: Cursor):
+    for item in result:
+        print("Book id", item.get("book_id"))
+        print(f"Loaned until {item.get('loaned_until').date()}")
+        print(f"{'Returned' if item.get('returned') else 'Not returned'}")
 
 main()
