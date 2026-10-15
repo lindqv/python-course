@@ -98,6 +98,7 @@ members = [
 
 loans = [
     {"member_id": member_ids[0], "book_id": book_ids[3], "loaned_until": datetime(2026, 10, 31), "returned": False},
+    {"member_id": member_ids[0], "book_id": book_ids[1], "loaned_until": datetime(2026, 10, 14), "returned": False},
 ]
 
 db.books.insert_many(books)
