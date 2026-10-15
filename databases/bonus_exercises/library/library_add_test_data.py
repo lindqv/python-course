@@ -40,6 +40,7 @@ db.create_collection("members", validator={
             },
             'email': {
                 'bsonType': "string",
+                'uniqueItems': True,
                 'pattern': "^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$",
                 'description': "'email' must be a valid email address and is required"
             },
@@ -65,7 +66,7 @@ db.create_collection("loans", validator={
                 'bsonType': "date",
                 'description': "'loaned_until' must be an date, and is required"
             },
-            'copies': {
+            'returned': {
                 'bsonType': "bool",
                 'description': "'returned' must be a boolean and is required"
             },
