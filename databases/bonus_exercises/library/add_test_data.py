@@ -28,7 +28,7 @@ db.create_collection("books", validator={
     }
 })
 
-db.books.create_index( { "title": 1 } )
+db.books.create_index({"title": "text", "author": "text"})
 
 
 db.create_collection("members", validator={
@@ -77,7 +77,7 @@ db.create_collection("loans", validator={
     }
 })
 
-book_ids = [ObjectId() for _ in range(9)]
+book_ids = [ObjectId() for _ in range(10)]
 books = [
     {"_id": book_ids[0], "title": "Orlando", "author": "Virginia Woolf", "genre": "Fiction", "copies": 1},
     {"_id": book_ids[1], "title": "The Picture of Dorian Gray", "author": "Oscar Wilde", "genre": "Fiction", "copies": 4},
@@ -87,6 +87,7 @@ books = [
     {"_id": book_ids[5], "title": "A Study in Scarlet", "author": "Arthur Conan Doyle", "genre": "Fiction", "copies": 0},
     {"_id": book_ids[6], "title": "Childe Harold's Pilgrimage", "author": "Lord Byron", "genre": "Poetry", "copies": 1,},
     {"_id": book_ids[7], "title": "Endymion", "author": "John Keats", "genre": "Poetry", "copies": 1},
+    {"_id": book_ids[8], "title": "Sense and Sensibility", "author": "Jane Austen", "genre": "Fiction", "copies": 2},
 ]
 
 member_ids = [ObjectId() for _ in range(2)]

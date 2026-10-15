@@ -1,4 +1,5 @@
-from pymongo import MongoClient, CursorType
+from pymongo import MongoClient
+from pymongo.cursor import Cursor
 client = MongoClient("mongodb://localhost:27017/")
 db = client["library"]
 
@@ -18,14 +19,13 @@ def main():
             break
 
 def search_for_books(query: str):
-    result = db.books.find({"title" : query})
+    result = db.books.find({"$text": {"$search": query}})
     return result
 
-def print_book_search_result(result: CursorType):
+def print_book_search_result(result: Cursor):
     for entry in result:
         print(f"{entry.get('title', 'Untitled')} by {entry.get('author', 'Unknown author')}")
         print(f"{entry.get('genre', 'Unknown genre')}")
         print(f"{entry.get('copies', 0)} copies available")
 
-#main()
-print_book_search_result(search_for_books("Pride and Prejudice"))
+main()
