@@ -2,6 +2,23 @@ from pymongo import MongoClient
 client = MongoClient("mongodb://localhost:27017/")
 db = client["webshop"]
 
+# Exercise 3
+db.drop_collection("newsletter_signups")
+db.create_collection("newsletter_signups", validator={"$jsonSchema": {
+    "required": ["email", "source"],
+    "properties": {
+    "email": {"bsonType": "string"},
+    "source": {"enum": ["web", "store"]}
+    }
+}})
+
+db.newsletter_signups.insert_one({"email": "example@email.com", "source": "web"})
+# The examples below will fail the validation and will not be inserted
+#db.newsletter_signups.insert_one({"email": "hello", "source": "telephone"})
+#db.newsletter_signups.insert_one({"email": "example@email.com"})
+#db.newsletter_signups.insert_one({"source": "web"})
+#db.newsletter_signups.insert_one({"email": "", "source": ""})
+
 # Exercise 4
 result = db.customers.aggregate([
     {"$group": {"_id": "$city",
