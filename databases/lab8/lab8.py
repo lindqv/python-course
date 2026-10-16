@@ -40,3 +40,38 @@ result = db.orders.aggregate([
 
 for row in result:
     print(row)
+
+# Exercise 8
+result = db.orders.aggregate([
+    {"$match": {
+        "status": {"$ne": "cancelled"}
+        }
+    },
+    {"$project": {
+        "items.product_id": True,
+        "items.quantity": True
+        }
+    },
+    {"$unwind": "$items"},
+    {"$lookup": {
+        "from": "products",
+        "localField": "items.product_id",
+        "foreignField": "_id",
+        "as": "product_data",
+        }  
+    },
+    {"$project": {
+        "items.product_id": True,
+        "items.quantity": True,
+        "product_data.category": True
+        }
+    },
+    {"$group": {
+        "_id": "$product_data.category", 
+        "count": {"$sum": 1}
+        }
+    }
+])
+
+for row in result:
+    print(row)
