@@ -75,3 +75,40 @@ result = db.orders.aggregate([
 
 for row in result:
     print(row)
+
+# Exercise 9
+result = db.orders.aggregate([
+    {"$project": {
+        "status": True,
+        "items.product_id": True,
+        "items.quantity": True,
+        "items.unit_price": True
+        }
+    },
+    {"$unwind": "$items"},
+    {"$lookup": {
+        "from": "products",
+        "localField": "items.product_id",
+        "foreignField": "_id",
+        "as": "product_data",
+        }  
+    },
+    {"$project": {
+        "status": True,
+        "items.product_id": True,
+        "items.quantity": True,
+        "items.unit_price": True,
+        "product_data.category": True
+        }
+    },
+    {"$group": {
+        "_id": "$status", 
+        "count": {"$sum": 1},
+        "revenue": {"$sum": {"$multiply": ["$items.quantity", "$items.unit_price"]}}
+        }
+    }
+])
+
+for row in result:
+    print(row)
+
