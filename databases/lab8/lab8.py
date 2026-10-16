@@ -112,3 +112,21 @@ result = db.orders.aggregate([
 for row in result:
     print(row)
 
+# Exercise 10
+result = db.products.aggregate([
+    {"$project": {
+        "tags": True,
+    }},
+    {"$unwind": "$tags"},
+    {"$group": {
+        "_id": "$tags", 
+        "count": {"$sum": 1}
+    }},
+    {"$sort": {
+        "count": -1
+        }
+    }
+])
+
+for row in result:
+    print(row)
