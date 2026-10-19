@@ -6,7 +6,7 @@ def get_json(url, params=None, headers=None, timeout=5):
         response.raise_for_status()
         return response.json()
     except requests.exceptions.Timeout:
-        print("The requesst took too long")
+        print("The request took too long")
     except requests.exceptions.ConnectionError:
         print("Could not connect to the server")
     except requests.exceptions.HTTPError as error:
