@@ -28,3 +28,10 @@ response = requests.get(f"https://api.github.com/users/{username}/repos",
                         timeout=5)
 
 print("Rate limit without token", response.headers.get("X-RateLimit-Limit"))
+
+# When a character in the token is modified I get a 401 status code.
+# The difference between 401 and 403 status codes:
+# 401 (unauthorized) denies the request because the server 
+# does not know who you are (your authorization is not valid).
+# 403 (forbidden) denies the request with knowledge about who you are (authorization), 
+# but access is still not given. The server knows who you are, but the answer is still no.
