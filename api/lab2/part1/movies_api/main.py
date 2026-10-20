@@ -33,9 +33,9 @@ def get_movies(director: str | None = None, year: int | None = None):
     else:
         return movies
 
-@app.get("/movies/{id}")
+@app.get("/movies/{movie_id}")
 def get_movie(movie_id: int):
-    find_movie(movie_id)
+    return find_movie(movie_id)
 
 @app.post("/movies", status_code=201)
 def create_movie(movie: Movie):
