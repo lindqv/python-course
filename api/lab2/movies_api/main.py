@@ -1,5 +1,10 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header, Depends
 from pydantic import BaseModel
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 
 app = FastAPI()
 
@@ -19,6 +24,10 @@ movies = [
     {"id": 3, "title": "Orlando", "director": "Sally Potter", "year": 1992},
     {"id": 4, "title": "Bright Star", "director": "Jane Campion", "year": 2009},
 ]
+
+def check_key(x_api_key: str | None = Header(default=None)):
+    if x_api_key != API_KEY:
+        raise HTTPException(status_code=401)
 
 def find_movie(movie_id: int):
     for movie in movies:
@@ -42,14 +51,14 @@ def get_movies(director: str | None = None, year: int | None = None):
 def get_movie(movie_id: int):
     return find_movie(movie_id)
 
-@app.post("/movies", status_code=201)
+@app.post("/movies", status_code=201, dependencies=[Depends(check_key)])
 def create_movie(movie: Movie):
     new_id = max((movie["id"] for movie in movies), default=0) + 1
     new_movie = {'id': new_id, 'title': movie.title, 'director': movie.director, 'year': movie.year}
     movies.append(new_movie)
     return new_movie
 
-@app.put("/movies/{movie_id}")
+@app.put("/movies/{movie_id}", dependencies=[Depends(check_key)])
 def replace_movie(movie_id: int, movie: Movie):
     existing = find_movie(movie_id)
     existing['title'] = movie.title
@@ -58,12 +67,12 @@ def replace_movie(movie_id: int, movie: Movie):
     return existing
 
 
-@app.delete("/movies/{movie_id}", status_code=204)
+@app.delete("/movies/{movie_id}", status_code=204, dependencies=[Depends(check_key)])
 def delete_movie(movie_id: int):
     existing = find_movie(movie_id)
     movies.remove(existing)
 
-@app.patch("/movies/{movie_id}")
+@app.patch("/movies/{movie_id}", dependencies=[Depends(check_key)])
 def update_movie(movie_id: int, movie_update: MovieUpdate):
     existing = find_movie(movie_id)
     fields_to_update = movie_update.model_dump(exclude_unset=True)
