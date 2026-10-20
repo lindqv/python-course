@@ -7,3 +7,5 @@ This repo contains my coursework for the Python and AI course given by Lexicon.
     - Labs
 2. Databases:
     - Labs
+3. APIs:
+   - Labs
