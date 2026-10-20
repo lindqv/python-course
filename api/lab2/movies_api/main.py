@@ -75,3 +75,8 @@ def update_movie(movie_id: int, movie_update: MovieUpdate):
 # Empty body {}: 200, no change
 # Year written as text: 422
 # Id that does not exist: 404
+
+# PATCH vs PUT
+# I would use PATCH if I wanted to update only some of the fields.
+# I would use PUT if I wanted to complete replace all the values with new ones, 
+# keeping none of the old values.
