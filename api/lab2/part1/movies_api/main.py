@@ -15,6 +15,12 @@ movies = [
     {"id": 4, "title": "Bright Star", "director": "Jane Campion", "year": 2009},
 ]
 
+def find_movie(movie_id: int):
+    for movie in movies:
+        if movie['id'] == movie_id:
+            return movie
+    raise HTTPException(status_code=404, detail="Movie not found")
+
 @app.get("/movies")
 def get_movies(director: str | None = None, year: int | None = None):
     if director and year:
@@ -29,10 +35,7 @@ def get_movies(director: str | None = None, year: int | None = None):
 
 @app.get("/movies/{id}")
 def get_movie(movie_id: int):
-    for movie in movies:
-        if movie['id'] == movie_id:
-            return movie
-    raise HTTPException(status_code=404, detail="Movie not found")
+    find_movie(movie_id)
 
 @app.post("/movies", status_code=201)
 def create_movie(movie: Movie):
@@ -40,3 +43,17 @@ def create_movie(movie: Movie):
     new_movie = {'id': new_id, 'title': movie.title, 'director': movie.director, 'year': movie.year}
     movies.append(new_movie)
     return new_movie
+
+@app.put("/movies/{movie_id}")
+def replace_movie(movie_id: int, movie: Movie):
+    existing = find_movie(movie_id)
+    existing['title'] = movie.title
+    existing['director'] = movie.director
+    existing['year'] = movie.year
+    return existing
+
+
+@app.delete("/movies/{movie_id}", status_code=204)
+def delete_movie(movie_id: int):
+    existing = find_movie(movie_id)
+    movies.remove(existing)
