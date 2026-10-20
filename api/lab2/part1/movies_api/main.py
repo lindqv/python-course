@@ -10,8 +10,16 @@ movies = [
 ]
 
 @app.get("/movies")
-def get_movies():
-    return movies
+def get_movies(director: str | None = None, year: int | None = None):
+    if director and year:
+        return [movie for movie in movies 
+                if director.lower() in movie["director"].lower() and year == movie["year"]]
+    elif director:
+        return [movie for movie in movies if director.lower() in movie["director"].lower()]
+    elif year:
+        return [movie for movie in movies if year == movie["year"]]
+    else:
+        return movies
 
 @app.get("/movies/{id}")
 def get_movie(movie_id: int):
