@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..")
-from lab1.api_client import get_json
+from part1.api_client import get_json
 
 def find_city(city_name: str):
     return get_json("https://geocoding-api.open-meteo.com/v1/search", params={"name": city_name, "count": 1})

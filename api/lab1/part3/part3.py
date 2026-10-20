@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 import sys
 sys.path.append("..")
-from lab1.api_client import get_json
+from part1.api_client import get_json
 import requests
 
 load_dotenv()
