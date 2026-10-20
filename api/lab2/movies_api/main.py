@@ -8,6 +8,11 @@ class Movie(BaseModel):
     director: str
     year: int
 
+class MovieUpdate(BaseModel):
+    title: str | None = None
+    director: str | None = None
+    year: int | None = None
+
 movies = [
     {"id": 1, "title": "Metropolis", "director": "Fritz Lang", "year": 1927},
     {"id": 2, "title": "Dead Poets Society", "director": "Peter Weir", "year": 1989},
@@ -57,3 +62,16 @@ def replace_movie(movie_id: int, movie: Movie):
 def delete_movie(movie_id: int):
     existing = find_movie(movie_id)
     movies.remove(existing)
+
+@app.patch("/movies/{movie_id}")
+def update_movie(movie_id: int, movie_update: MovieUpdate):
+    existing = find_movie(movie_id)
+    fields_to_update = movie_update.model_dump(exclude_unset=True)
+    for (key, new_value) in fields_to_update.items():
+        existing[key] = new_value
+    return existing
+
+# Testing response codes
+# Empty body {}: 200, no change
+# Year written as text: 422
+# Id that does not exist: 404
