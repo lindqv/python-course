@@ -1,4 +1,4 @@
-import sys
+import sys, json, os, time
 sys.path.append("..")
 from part1.api_client import get_json
 
@@ -12,9 +12,25 @@ def get_weather(latitude: float, longitude: float):
         "current": ["temperature_2m", "wind_speed_10m"]
         }
     )
+
+def get_cache_data(cache_path: str, cache_age_minutes_limit: int = 10):
+    if os.path.exists(cache_path):
+        time_last_modified_seconds = os.path.getmtime(cache_path)
+        time_now_seconds = time.time()
+        cache_age_minutes = (time_now_seconds - time_last_modified_seconds) / 60
+        print("cache age minutes", cache_age_minutes)
+
+        if cache_age_minutes < cache_age_minutes_limit:
+            with open(cache_path, mode="r", encoding="utf-8") as cache:
+                cache_data =  json.load(cache)
+                print("got data from the cache")
+                return cache_data
+    print("no cache")
+
 def main():
     print("Current weather service")
-    city = input("Enter a city to show the weather for: ")
+    #city = input("Enter a city to show the weather for: ")
+    city = "Stockholm"
     coordinate_response = find_city(city)
 
     if coordinate_response.get("results"):
@@ -22,8 +38,14 @@ def main():
         longitude = coordinate_response["results"][0]["longitude"]
         country = coordinate_response["results"][0]["country"]
 
-        weather_response = get_weather(latitude, longitude)
-        print(weather_response)
+        cache_path = "weather_cache.json"
+        weather_response = get_cache_data(cache_path)
+        if not weather_response:
+            print("calling the api")
+            weather_response = get_weather(latitude, longitude)
+            with open(cache_path, mode="w", encoding="utf-8") as cache:
+                json.dump(weather_response, cache)
+
         if weather_response:
             temperature = weather_response["current"]["temperature_2m"]
             temperature_unit = weather_response["current_units"]["temperature_2m"]
