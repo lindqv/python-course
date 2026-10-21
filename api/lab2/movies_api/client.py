@@ -23,3 +23,6 @@ print("Without key", response.status_code)
 response = requests.post(f"{BASE}/movies", json=new_movie, timeout=5, 
                          headers={"X-API-Key": API_KEY})
 print("With key", response.status_code)
+
+all_movies = get_json(f"{BASE}/movies")
+print(all_movies)

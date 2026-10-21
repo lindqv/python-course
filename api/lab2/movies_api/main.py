@@ -1,10 +1,11 @@
 from fastapi import FastAPI, HTTPException, Header, Depends
 from pydantic import BaseModel
 from dotenv import load_dotenv
-import os
+import os, json
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
+MOVIES_PATH = "movies.json"
 
 app = FastAPI()
 
@@ -18,25 +19,43 @@ class MovieUpdate(BaseModel):
     director: str | None = None
     year: int | None = None
 
-movies = [
-    {"id": 1, "title": "Metropolis", "director": "Fritz Lang", "year": 1927},
-    {"id": 2, "title": "Dead Poets Society", "director": "Peter Weir", "year": 1989},
-    {"id": 3, "title": "Orlando", "director": "Sally Potter", "year": 1992},
-    {"id": 4, "title": "Bright Star", "director": "Jane Campion", "year": 2009},
-]
-
 def check_key(x_api_key: str | None = Header(default=None)):
     if x_api_key != API_KEY:
         raise HTTPException(status_code=401)
 
 def find_movie(movie_id: int):
+    movies = load_movies(MOVIES_PATH)
     for movie in movies:
         if movie['id'] == movie_id:
             return movie
     raise HTTPException(status_code=404, detail="Movie not found")
 
+def find_movie_index(movie_id: int):
+    movies = load_movies(MOVIES_PATH)
+    for index, movie in enumerate(movies):
+        if movie['id'] == movie_id:
+            return index
+
+def load_movies(path: str):
+    if os.path.exists(path):
+        with open(path, mode="r", encoding="utf-8") as movies:
+            return json.load(movies)
+    else:
+        return [
+            {"id": 1, "title": "Metropolis", "director": "Fritz Lang", "year": 1927},
+            {"id": 2, "title": "Dead Poets Society", "director": "Peter Weir", "year": 1989},
+            {"id": 3, "title": "Orlando", "director": "Sally Potter", "year": 1992},
+            {"id": 4, "title": "Bright Star", "director": "Jane Campion", "year": 2009},
+        ]
+
+def save_movies(path: str, json_data):
+    with open(path, mode="w", encoding="utf-8") as movies:
+        json.dump(json_data, movies, indent=2)
+
 @app.get("/movies")
 def get_movies(director: str | None = None, year: int | None = None):
+    movies = load_movies(MOVIES_PATH)
+
     if director and year:
         return [movie for movie in movies 
                 if director.lower() in movie["director"].lower() and year == movie["year"]]
@@ -53,9 +72,11 @@ def get_movie(movie_id: int):
 
 @app.post("/movies", status_code=201, dependencies=[Depends(check_key)])
 def create_movie(movie: Movie):
+    movies = load_movies(MOVIES_PATH)
     new_id = max((movie["id"] for movie in movies), default=0) + 1
     new_movie = {'id': new_id, 'title': movie.title, 'director': movie.director, 'year': movie.year}
     movies.append(new_movie)
+    save_movies(MOVIES_PATH, movies)
     return new_movie
 
 @app.put("/movies/{movie_id}", dependencies=[Depends(check_key)])
