@@ -18,14 +18,11 @@ def get_cache_data(cache_path: str, cache_age_minutes_limit: int = 10):
         time_last_modified_seconds = os.path.getmtime(cache_path)
         time_now_seconds = time.time()
         cache_age_minutes = (time_now_seconds - time_last_modified_seconds) / 60
-        print("cache age minutes", cache_age_minutes)
 
         if cache_age_minutes < cache_age_minutes_limit:
             with open(cache_path, mode="r", encoding="utf-8") as cache:
                 cache_data =  json.load(cache)
-                print("got data from the cache")
                 return cache_data
-    print("no cache")
 
 def write_to_cache(cache_path: str, json_data):
     with open(cache_path, mode="w", encoding="utf-8") as cache:
@@ -47,7 +44,6 @@ def main():
         coordinate_response = {}
     
     if not coordinate_response:
-        print("calling the coordinate api for", city)
         coordinate_response = find_city(city)
         write_to_cache(coordinate_cache_path, coordinate_response)
 
@@ -59,14 +55,11 @@ def main():
         weather_cache_path = "cache_weather.json"
         weather_response = get_cache_data(weather_cache_path)
         if not cached_weather_response_is_for_this_city(weather_response, city):
-            print("cache data was not valid for", city, weather_response)
             weather_response = {}
 
         if not weather_response:
-            print("calling the weather api")
             weather_response = get_weather(latitude, longitude)
             weather_response_with_city_name = {**weather_response, "city": city}
-            print("weather data with city name", weather_response_with_city_name)
             write_to_cache(weather_cache_path, weather_response_with_city_name)
 
         if weather_response:
