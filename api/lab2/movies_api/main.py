@@ -24,17 +24,10 @@ def check_key(x_api_key: str | None = Header(default=None)):
         raise HTTPException(status_code=401)
 
 def find_movie(movie_id: int):
-    movies = load_movies(MOVIES_PATH)
     for movie in movies:
         if movie['id'] == movie_id:
             return movie
     raise HTTPException(status_code=404, detail="Movie not found")
-
-def find_movie_index(movie_id: int):
-    movies = load_movies(MOVIES_PATH)
-    for index, movie in enumerate(movies):
-        if movie['id'] == movie_id:
-            return index
 
 def load_movies(path: str):
     if os.path.exists(path):
@@ -72,7 +65,6 @@ def get_movie(movie_id: int):
 
 @app.post("/movies", status_code=201, dependencies=[Depends(check_key)])
 def create_movie(movie: Movie):
-    movies = load_movies(MOVIES_PATH)
     new_id = max((movie["id"] for movie in movies), default=0) + 1
     new_movie = {'id': new_id, 'title': movie.title, 'director': movie.director, 'year': movie.year}
     movies.append(new_movie)
@@ -85,13 +77,14 @@ def replace_movie(movie_id: int, movie: Movie):
     existing['title'] = movie.title
     existing['director'] = movie.director
     existing['year'] = movie.year
+    save_movies(MOVIES_PATH, movies)
     return existing
-
 
 @app.delete("/movies/{movie_id}", status_code=204, dependencies=[Depends(check_key)])
 def delete_movie(movie_id: int):
     existing = find_movie(movie_id)
     movies.remove(existing)
+    save_movies(MOVIES_PATH, movies)
 
 @app.patch("/movies/{movie_id}", dependencies=[Depends(check_key)])
 def update_movie(movie_id: int, movie_update: MovieUpdate):
@@ -99,7 +92,11 @@ def update_movie(movie_id: int, movie_update: MovieUpdate):
     fields_to_update = movie_update.model_dump(exclude_unset=True)
     for (key, new_value) in fields_to_update.items():
         existing[key] = new_value
+    save_movies(MOVIES_PATH, movies)
     return existing
+
+movies = load_movies(MOVIES_PATH)
+
 
 # Testing response codes
 # Empty body {}: 200, no change
