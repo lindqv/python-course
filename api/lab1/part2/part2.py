@@ -27,24 +27,32 @@ def get_cache_data(cache_path: str, cache_age_minutes_limit: int = 10):
                 return cache_data
     print("no cache")
 
+def write_to_cache(cache_path: str, json_data):
+    with open(cache_path, mode="w", encoding="utf-8") as cache:
+        json.dump(json_data, cache)
+
 def main():
     print("Current weather service")
     #city = input("Enter a city to show the weather for: ")
     city = "Stockholm"
-    coordinate_response = find_city(city)
+    coordinate_cache_path = "cache_coordinates.json"
+    coordinate_response = get_cache_data(coordinate_cache_path)
+    if not coordinate_response:
+        print("calling the coordinate api")
+        coordinate_response = find_city(city)
+        write_to_cache(coordinate_cache_path, coordinate_response)
 
     if coordinate_response.get("results"):
         latitude = coordinate_response["results"][0]["latitude"]
         longitude = coordinate_response["results"][0]["longitude"]
         country = coordinate_response["results"][0]["country"]
 
-        cache_path = "weather_cache.json"
-        weather_response = get_cache_data(cache_path)
+        weather_cache_path = "cache_weather.json"
+        weather_response = get_cache_data(weather_cache_path)
         if not weather_response:
-            print("calling the api")
+            print("calling the weather api")
             weather_response = get_weather(latitude, longitude)
-            with open(cache_path, mode="w", encoding="utf-8") as cache:
-                json.dump(weather_response, cache)
+            write_to_cache(weather_cache_path, weather_response)
 
         if weather_response:
             temperature = weather_response["current"]["temperature_2m"]
