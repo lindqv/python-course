@@ -58,3 +58,8 @@ def main():
         print("Could not find the city.")
 
 main()
+
+# Task 3
+# Adding a cache to avoid calling an API too often is useful because: 
+# * It decreases the number of API calls (hopefully avoiding rate limits)
+# * It is faster to fetch data from a file than to make an API call
