@@ -31,14 +31,32 @@ def write_to_cache(cache_path: str, json_data):
     with open(cache_path, mode="w", encoding="utf-8") as cache:
         json.dump(json_data, cache)
 
+def valid_cache_coordinate_response(coordinate_response, city_name: str):
+    if coordinate_response is None:
+        return False
+    else:
+        print("second", coordinate_response["results"][0])
+        print("third", coordinate_response["results"][0]["name"])
+        return coordinate_response["results"][0]["name"] == city_name
+
+def valid_weather_response(weather_response, latitude: float, longitude: float):
+    print("latitude", weather_response.get("latitude"), latitude)
+    print("longitude", weather_response.get("longitude"), longitude)
+    
+    return weather_response.get("latitude") == latitude and \
+           weather_response.get("longitude") == longitude
+
 def main():
     print("Current weather service")
-    #city = input("Enter a city to show the weather for: ")
-    city = "Stockholm"
+    city = input("Enter a city to show the weather for: ").strip().title()
+
     coordinate_cache_path = "cache_coordinates.json"
     coordinate_response = get_cache_data(coordinate_cache_path)
+    if not valid_cache_coordinate_response(coordinate_response, city):
+        coordinate_response = {}
+    
     if not coordinate_response:
-        print("calling the coordinate api")
+        print("calling the coordinate api for", city)
         coordinate_response = find_city(city)
         write_to_cache(coordinate_cache_path, coordinate_response)
 
@@ -49,6 +67,9 @@ def main():
 
         weather_cache_path = "cache_weather.json"
         weather_response = get_cache_data(weather_cache_path)
+        if not valid_weather_response(weather_response, latitude, longitude):
+            weather_response = {}
+
         if not weather_response:
             print("calling the weather api")
             weather_response = get_weather(latitude, longitude)
