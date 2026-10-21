@@ -31,16 +31,11 @@ def write_to_cache(cache_path: str, json_data):
     with open(cache_path, mode="w", encoding="utf-8") as cache:
         json.dump(json_data, cache)
 
-def valid_cache_coordinate_response(coordinate_response, city_name: str):
-    if coordinate_response is None:
-        return False
-    else:
-        return coordinate_response["results"][0]["name"] == city_name
+def cached_coordinate_response_is_for_this_city(coordinate_response, city_name: str):
+    return coordinate_response and coordinate_response["results"][0]["name"] == city_name
 
-def valid_weather_response(weather_response, city_name: str):
-    if weather_response is None:
-        return False
-    return weather_response.get("city") == city_name
+def cached_weather_response_is_for_this_city(weather_response, city_name: str):
+    return weather_response and weather_response.get("city") == city_name
 
 def main():
     print("Current weather service")
@@ -48,7 +43,7 @@ def main():
 
     coordinate_cache_path = "cache_coordinates.json"
     coordinate_response = get_cache_data(coordinate_cache_path)
-    if not valid_cache_coordinate_response(coordinate_response, city):
+    if not cached_coordinate_response_is_for_this_city(coordinate_response, city):
         coordinate_response = {}
     
     if not coordinate_response:
@@ -63,7 +58,7 @@ def main():
 
         weather_cache_path = "cache_weather.json"
         weather_response = get_cache_data(weather_cache_path)
-        if not valid_weather_response(weather_response, city):
+        if not cached_weather_response_is_for_this_city(weather_response, city):
             print("cache data was not valid for", city, weather_response)
             weather_response = {}
 
