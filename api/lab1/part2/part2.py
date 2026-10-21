@@ -35,16 +35,12 @@ def valid_cache_coordinate_response(coordinate_response, city_name: str):
     if coordinate_response is None:
         return False
     else:
-        print("second", coordinate_response["results"][0])
-        print("third", coordinate_response["results"][0]["name"])
         return coordinate_response["results"][0]["name"] == city_name
 
-def valid_weather_response(weather_response, latitude: float, longitude: float):
-    print("latitude", weather_response.get("latitude"), latitude)
-    print("longitude", weather_response.get("longitude"), longitude)
-    
-    return weather_response.get("latitude") == latitude and \
-           weather_response.get("longitude") == longitude
+def valid_weather_response(weather_response, city_name: str):
+    if weather_response is None:
+        return False
+    return weather_response.get("city") == city_name
 
 def main():
     print("Current weather service")
@@ -67,13 +63,16 @@ def main():
 
         weather_cache_path = "cache_weather.json"
         weather_response = get_cache_data(weather_cache_path)
-        if not valid_weather_response(weather_response, latitude, longitude):
+        if not valid_weather_response(weather_response, city):
+            print("cache data was not valid for", city, weather_response)
             weather_response = {}
 
         if not weather_response:
             print("calling the weather api")
             weather_response = get_weather(latitude, longitude)
-            write_to_cache(weather_cache_path, weather_response)
+            weather_response_with_city_name = {**weather_response, "city": city}
+            print("weather data with city name", weather_response_with_city_name)
+            write_to_cache(weather_cache_path, weather_response_with_city_name)
 
         if weather_response:
             temperature = weather_response["current"]["temperature_2m"]
