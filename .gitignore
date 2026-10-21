@@ -222,3 +222,4 @@ __marimo__/
 
 # .json caches
 cache*.json
+/api/lab2/movies_api/movies.json
