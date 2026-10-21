@@ -29,7 +29,9 @@ def write_to_cache(cache_path: str, json_data):
         json.dump(json_data, cache)
 
 def cached_coordinate_response_is_for_this_city(coordinate_response, city_name: str):
-    return coordinate_response and coordinate_response["results"][0]["name"] == city_name
+    return coordinate_response and \
+           coordinate_response.get("results") and \
+           coordinate_response.get("results")[0].get("name") == city_name
 
 def cached_weather_response_is_for_this_city(weather_response, city_name: str):
     return weather_response and weather_response.get("city") == city_name
