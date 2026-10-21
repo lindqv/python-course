@@ -107,3 +107,8 @@ movies = load_movies(MOVIES_PATH)
 # I would use PATCH if I wanted to update only some of the fields.
 # I would use PUT if I wanted to complete replace all the values with new ones, 
 # keeping none of the old values.
+
+# Two people adding a movie at exactly the same time could cause problems with concurrency.
+# It could cause duplicate entries, race conditions or deadlocks, for instance.
+# A database is a much more powerful solution than a .json file for handling these kinds of issues.
+# A database can use tools to handle them, like database constraints and locking.
