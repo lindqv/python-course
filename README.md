@@ -10,3 +10,5 @@ This repo contains my coursework for the Python and AI course given by Lexicon.
 3. APIs, Git, and Scrum:
    - Labs
    - Written exercises
+4. Data analysis and visualisation
+   - Labs
