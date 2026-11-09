@@ -223,3 +223,6 @@ __marimo__/
 # .json caches
 cache*.json
 /api/lab2/movies_api/movies.json
+
+# data folder for data analysis and visualisation
+/data_analysis_visualisation/data
