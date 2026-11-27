@@ -3,8 +3,8 @@ This repo contains my coursework for the Python and AI course given by Lexicon.
 
 ## Table of contents
 1. Python fundamentals:
-    - Project
     - Labs
+    - Project
 2. Databases:
     - Labs
 3. APIs, Git, and Scrum:
@@ -12,3 +12,4 @@ This repo contains my coursework for the Python and AI course given by Lexicon.
    - Written exercises
 4. Data analysis and visualisation
    - Labs
+   - Project
