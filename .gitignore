@@ -229,4 +229,4 @@ cache*.json
 /data_analysis_visualisation/project/data
 
 # png images for data analysis and visualisation
-/data_analysis_visualisation/project/*.png
+/data_analysis_visualisation/project/images
