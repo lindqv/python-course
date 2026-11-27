@@ -227,3 +227,6 @@ cache*.json
 # data folders for data analysis and visualisation
 /data_analysis_visualisation/data
 /data_analysis_visualisation/project/data
+
+# png images for data analysis and visualisation
+/data_analysis_visualisation/project/*.png
